@@ -41,8 +41,8 @@ model (in order) are as follows:
    effects, and covariates for the definition of the dynamical parameters.
 5. `@vars` (optional) defines aliases that can be used in the proceeding blocks.
 6. `@init` (optional) defines the initial conditions for the dynamical model.
-7. `@dynamics` defines the dynamical model, either by its differential equation
-   or its analytical solution.
+7. `@dynamics` (optional) defines the dynamical model, either by its
+   differential equation or its analytical solution.
 8. `@derived` defines the derived observables from the dynamical model's
    solution, including the error distributions.
 9. `@observed` (optional) defines post-processing on the observables sampled
@@ -203,6 +203,9 @@ The `@vars` block is defined by a list of such equality statements, such as:
 end
 ```
 
+Note that the special value `:=` can be used to define intermediate statements
+that will not be carried outside of the block.
+
 ### `@init`: Initial Conditions
 
 This block defines the initial conditions of the dynamical model in terms of
@@ -224,13 +227,288 @@ end
 ```
 
 Any variable omitted from this block is given the default initial condition
-of 0. If the block is omitted, then all dynamical variables are initalized
+of 0. If the block is omitted, then all dynamical variables are initialized
 at 0.
+
+Note that the special value `:=` can be used to define intermediate statements
+that will not be carried outside of the block.
 
 ### `@dynamics`: The Dynamical Model
 
+The `@dynamics` block defines the nonlinear function from the parameters to
+the derived variables via a dynamical (differential equation) model. It can
+currently be specified either by an analytical solution type or via an
+ordinary differential equation (ODE) (for more types of differential equations,
+please see the function-based interface).
+
+The analytical solutions are defined in the
+[dynamical types]() page and can be invoked via the name. For example,
+
+```julia
+@dynamics OneCompartmentModel
+```
+
+defines the dynamical model as the `OneCompartmentModel`.
+
+For a system of ODEs, the dynamical variables are defined by their derivative
+expression. A derivative expression is given by a variable's derivative
+(specified by `'`) and an equality (`=`). For example, the following defines
+the value `Depot` by it's ODE:
+
+```julia
+Depot' = -Ka*Depot
+```
+
+where `Ka` was defined in the `@pre` block. Variable aliases defined in the
+`@vars` are accessible in this block. Additionally, the variable `t` is reserved
+for the solver time. For example, if `Ka(t)` was defined as a function in the
+`@pre` block, then the value of `Ka` at solver time can be utilized in the
+derivative expression via:
+
+```julia
+Depot' = -Ka(t)*Depot
+```
+
+This is utilized for handling constructs such as time-varying covariates.
+
+Note that any Julia function defined outside of the `@model` block can be
+invoked in the `@dynamics` block.
+
 ### `@derived`: Derived Observables
+
+The `@derived` block defines the derived observables of the NLME model. They
+can be defined by any combination of the parameters, random effects, covariates,
+preprocessed variables, dynamical variables, and aliases. In this block, the
+value `t` is the time series which matches the array given in `subject.time`.
+The dynamical variables are an array which matches `t` in size, where `var[i]`
+is the value of the dynamical variable at time `t[i]`. Any aliases of a
+dynamical variable are also a time series.
+
+Observables can either be defined by equality statements `=` or by a distribution
+with `~`. For example, the equality statement
+
+```julia
+conc = @. Central / V
+```
+
+defines an array `conc` to be output from the model. Notice that we used Julia's
+[broadcast syntax]() for specifying that every value of Central is to be divided
+by V. Note that any standard Julia syntax (and externally defined functions)
+are allowed in this block.
+
+Error models are defined by `~` statements to probability distributions. For
+example, the following defines a time series of Normal distributions centered
+around the value of `conc` with a variance dependent on `conc` and `ϵ`:
+
+```julia
+dv ~ @. Normal(conc,conc*ϵ)
+```
+
+The likelihood of these distributions are utilized in the maximum likelihood
+and Bayesian estimation routines. Additionally, values in the `@observed`
+block are sampled from these error models.
+
+The `@derived` block is defined by a list of these expressions, for example:
+
+```julia
+@derived begin
+   conc = @. Central / V
+   dv ~ @. Normal(conc,conc*ϵ)
+end
+```
+
+Note that the special value `:=` can be used to define intermediate statements
+that will not be carried outside of the block.
+
+As a convenience, tie-ins with the included Noncompartmental Analysis (NCA)
+suite are given with via the `@nca` macro. For example, we can perform an NCA
+analysis via:
+
+```julia
+nca := @nca conc
+```
+
+to build an `NCASubject` using the time series given by the derived or dynamical
+variable `conc`. Once defined, the [functionality of the NCA module]() can be
+used to define derived variables via NCA diagnostics, for example:
+
+```julia
+auc =  NCA.auc(nca)
+thalf =  NCA.thalf(nca)
+cmax = NCA.cmax(nca)
+```
+
+Notice that the `@derived` block can mix values of different types (such as
+arrays and scalars) in the output.  
 
 ### `@observed`: Sampled Observations
 
+The `@observed` block allows one to define output variables based on the
+sampled values from the error model. These are given by equality statements
+(`=`) which can utilize the parameters, random effects, covariates, dynamical
+variables, and any sampled derived variables. For example, if we had defined:
+
+```julia
+@derived begin
+   dv ~ @. Normal(conc,conc*ϵ)
+end
+```
+
+then we can add the simulated AUC of the concentration with the error model's
+stochasticity (the `dv` values of one simulation) by utilizing the NCA features
+from within the `@observed` block as follows:
+
+```julia
+@observed begin
+   nca := @nca dv
+   sampled_auc = NCA.auc(nca)
+end
+```
+
+If no `@observed` block is specified, then the results of a simulation will
+simply be the derived values and the samples from the error models.
+
 ## The PuMaSModel Function-Based Interface
+
+The `PuMaSModel` function-based interface for defining an NLME model is the most
+expressive mechanism for using PuMaS and directly utilizes Julia types and
+functions. In fact, under the hood the `@model` DSL works by building an
+expression for the `PuMaSModel` interface! A `PuMaSModel` has the constructor:
+
+```julia
+PuMaSModel(paramset,random,pre,init,prob,derived,observed=(col,sol,obstimes,samples,subject)->samples)
+```
+
+Notice that the `observed` function is optional. This section describes the API
+of the functions which make up the `PuMaSModel` type. The structure closely
+follows that of the `@model` macro but is more directly Julia syntax.
+
+### The `paramset` ParamSet
+
+The value `paramset` is a `ParamSet` object which takes in a named tuple of `Domain`
+types. These `Domain` types are defined [on the Domains page](). For example,
+the following is a value `ParamSet` construction:
+
+```julia
+paramset = ParamSet((θ = VectorDomain(4, lower=zeros(4), init=ones(4)), # parameters
+              Ω = PSDDomain(2),
+              Σ = RealDomain(lower=0.0, init=1.0),
+              a = ConstDomain(0.2)))
+```
+
+### The `random` Function
+
+The `random(param)` function is a function on the parameters. It takes in the
+values from the `param` input named tuple and outputs a `ParamSet` for the
+random effects. For example:
+
+```julia
+function random(p)
+    ParamSet((η=MvNormal(p.Ω),))
+end
+```
+
+is a valid `random` function.
+
+### The `pre` Function
+
+The `pre` function takes in the `param` named tuple, the sampled `randeffs`
+named tuple, and the `subject` data and defines the named tuple of the collated
+preprocessed dynamical parameters. For example, the following is a valid
+definition of the `pre` function:
+
+```julia
+function pre(param,randeffs,subject)
+    (Σ  = param.Σ,
+    Ka = param.θ[1],  # pre
+    CL = param.θ[2] * ((subject.covariates.wt/70)^0.75) *
+         (param.θ[4]^subject.covariates.sex) * exp(randeffs.η[1]),
+    V  = param.θ[3] * exp(randeffs.η[2]))
+end
+```
+
+The output can be any valid Julia type. Notice that the covariates are
+specified via the `subject.covariates` field.
+
+### The `init` Function
+
+The `init` function defines the initial conditions of the dynamical variables
+from the collated preprocessed values `col` and the initial time point `t0`.
+Note that this follows the [DifferentialEquations.jl](http://docs.juliadiffeq.org/latest/)
+convention, in that the initial value type defines the type for the state used
+in the evolution equation.
+
+For example, the following defines the initial condition to be a vector of two
+zeros:
+
+```julia
+function init(col,t0)
+   [0.0,0.0]
+end
+```
+
+### The `prob` DEProblem
+
+The `prob` is a `DEProblem` defined by [DifferentialEquations.jl](http://docs.juliadiffeq.org/latest/).
+It can be any `DEProblem`, and the choice of `DEProblem` specifies the type of
+dynamical model. For example, if `prob` is an `SDEProblem`, then the NLME
+will be defined via a stochastic differential equation, and if `prob` is a
+`DDEProblem`, then the NLME will be defined via a delay differential equation.
+For details on defining a `DEProblem`, please
+[consult the DifferentialEquations.jl documentation](http://docs.juliadiffeq.org/latest/).
+
+Note that the timespan, initial condition, and parameters are sentinels that
+will be overridden in the simulation pipeline. Thus, for example, we can
+define `prob` as an `ODEProblem` omitting these values as follows:
+
+```julia
+function onecompartment_f(du,u,p,t)
+    du[1] = -p.Ka*u[1]
+    du[2] =  p.Ka*u[1] - (p.CL/p.V)*u[2]
+end
+prob = ODEProblem(onecompartment_f,nothing,nothing,nothing)
+```
+
+Notice that the parameters of the differential equation `p` is the result value
+`pre`.
+
+### The `derived` Function
+
+The `derived` function takes in the collated preprocessed values `col`, the
+`DESolution` to the differential equation `sol`, the `obstimes` set during
+the simulation and estimation, and the full `subject` data. The output can be
+any Julia type on which `map(f,x)` is defined (the `map` is utilized for the
+subsequent sampling of the error models). For example, the following is a valid
+`derived` function which outputs a named tuple:
+
+```julia
+function derived(col,sol,obstimes,subject)
+    central = sol(obstimes;idxs=2)
+    conc = @. central / col.V
+    dv = @. Normal(conc, conc*col.Σ)
+    (dv=dv,)
+end
+```
+
+Note that probability distributions in the output have a special meaning in
+maximum likelihood and Bayesian estimation, and are automatically sampled
+to become observation values during simulation.
+
+### The `observed` Function
+
+The `observed` function takes in the collated preprocessed values `col`,
+the `DESolution` `sol`, the `obstimes`, the sampled derived values `samples`,
+and the full `subject` data. The output value is the simulation output. It can
+be any Julia type. For example, the following is a valid `observed` function:
+
+```julia
+function observed(col,sol,obstimes,samples,subject)
+    (obs_cmax = maximum(samples.dv),
+     T_max = maximum(obstimes),
+     dv = samples.dv)
+end
+```
+
+Note that if the `observed` function is not given to the `PuMaSModel` constructor,
+the default function `(col,sol,obstimes,samples,subject)->samples` which passes
+through the sampled derived values is used.
