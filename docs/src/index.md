@@ -111,6 +111,5 @@ Pages = [
     "basics/simulation.md",
     "basics/estimation.md",
     "basics/nca.md",
-    "basics/data_formats.md",
 ]
 ```

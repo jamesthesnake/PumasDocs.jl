@@ -3,7 +3,7 @@ using Documenter,PuMaS
 makedocs(modules=[PuMaS],
          doctest=false, clean=true,
          format =:html,
-         sitename="PuMaS.jl",
+         sitename="PuMaS",
          authors="Chris Rackauckas, Yingbo Ma, Joga Gobburu, Vijay Ivaturi",
          pages = Any[
          "Home" => "index.md",
@@ -12,12 +12,11 @@ makedocs(modules=[PuMaS],
          ],
          "Basics" => Any[
            "basics/overview.md",
-         ],
-         "Analytical Solution Types" => Any[
-           "types/discrete_types.md",
-         ],
-         "Noncompartmental Analysis (NCA)" => Any[
-           "nca/overview.md",
+           "basics/models.md",
+           "basics/dosage_regimens.md",
+           "basics/simulation.md",
+           "basics/estimation.md",
+           "basics/nca.md",
          ],
          ])
 
