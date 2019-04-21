@@ -9,6 +9,28 @@ the parameters to describe the chance that a parameter has a given value given
 the data. The following section describes how to fit an NLME model in PuMaS
 via the two methods.
 
+## Defining Data for Estimation
+
+Estimation is done by looking at the likelihood of likewise names. Thus, for
+example if `subject.observations` is a `NamedTuple` with names `conc` and
+`dv`, the likelihood calculation will be between values from `derived` named
+`conc` and `dv`. If `conc` is a scalar in the observation data, then `conc`
+from `derived` should also be a scalar. Likewise, if `conc` is an array like
+a time series, then `conc` should be a size-matching time series when returned
+from `derived`. Note that likelihoods are calculated between the probability
+distribution from `derived` and the matching observation from
+`subject.observations`. If no likelihood is associated with a `derived` value,
+then the value has an implicit standard normal interpretation, which amounts
+to having the L2 Euclidian distance taken as the likelihood during fitting
+proceedures.
+
+**Note: Currently only `BayesMCMC` and `LaplaceI` support multiple output series.
+all other likelihood approximations must have the derived and observation data
+under the name `dv`**
+
+**Note: Currently the estimation procedures require that there only exists a
+single random effect (vector), and this vector must be named η (\eta)**
+
 ## Maximum Likelihood Estimation
 
 Maximum Likelihood Estimation (MLE) is performed using the `fit` function. This
