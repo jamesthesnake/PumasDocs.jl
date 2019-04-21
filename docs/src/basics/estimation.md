@@ -88,12 +88,6 @@ The following choices are available for the likelihood approximations:
 - `Laplace()`: second order Laplace approximation
 - `LaplaceI()`: second order Laplace approximation with interaction.
 
-These likelihoods utilize the conditional loglikelihoods defined by the error
-distributions. If the derived values were specified by values instead of
-probability distributions, these likelihoods are calculated via the L2 Euclidian
-norm, which amounts to an implicit assumption that the error distributions are
-standard normal.
-
 ### FittedPuMaSModel
 
 The relevant fields of a `FittedPuMaSModel` are:
