@@ -3,26 +3,10 @@
 Dosage regimens can be defined in two ways, either via the `DosageRegimen`
 constructor or the PuMaS NLME Data format (named PuMaSNDF).
 
-## `DosageRegimen`
+## Dosage Regimen Terminology
 
-The `DosageRegimen` type is a specification of a regimen. Its constructor is:
-
-```julia
-DosageRegimen(amt;
-              time = 0,
-              cmt  = 1,
-              evid = 1,
-              ii   = zero.(time),
-              addl = 0,
-              rate = zero.(amt)./oneunit.(time),
-              ss   = 0)
-```
-
-Each of the values can either be `AbstractVector`s or scalars. All vectors must
-be of the same length, and the elementwise combinations each define an event
-(with scalars being repeated).
-
-The definition of the values are as follows:
+Both the `DosageRegimen` and the `PuMaSNDF` utilize the same terminology for
+describing a dose. The definition of the values are as follows:
 
 - `amt`: the amount of the dose. This is the only required value.
 - `time`: the time at which the dose is given. Defaults to 0.
@@ -43,5 +27,24 @@ The definition of the values are as follows:
   state dose. 1 indicates that the dose is a steady state dose. 2 indicates that
   it is a steady state dose that is added to the previous amount. The default
   is 0.
+
+## `DosageRegimen`
+
+The `DosageRegimen` type is a specification of a regimen. Its constructor is:
+
+```julia
+DosageRegimen(amt;
+              time = 0,
+              cmt  = 1,
+              evid = 1,
+              ii   = zero.(time),
+              addl = 0,
+              rate = zero.(amt)./oneunit.(time),
+              ss   = 0)
+```
+
+Each of the values can either be `AbstractVector`s or scalars. All vectors must
+be of the same length, and the elementwise combinations each define an event
+(with scalars being repeated).
 
 ## PuMaSNDF
