@@ -169,6 +169,12 @@ Ka = t -> t*θ[1]
 end
 ```
 
+#### Dosing Control Parameters
+
+Special parameters, such as `lag`, are used to control the internal event
+handling (dosing) system. For more information on these parameters, see the
+[Dosing Control Parameters]() page.
+
 ### `@vars`: Variable Aliases
 
 The `@vars` block defines aliases which can be used in the proceeding blocks.
@@ -429,6 +435,12 @@ end
 
 The output can be any valid Julia type. Notice that the covariates are
 specified via the `subject.covariates` field.
+
+#### Dosing Control Parameters
+
+Special parameters in the return of the `pre` function, such as `lag`, are
+used to control the internal event handling (dosing) system. For more
+information on these parameters, see the [Dosing Control Parameters]() page.
 
 ### The `init` Function
 

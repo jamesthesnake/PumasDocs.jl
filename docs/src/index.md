@@ -113,3 +113,10 @@ Pages = [
     "basics/nca.md",
 ]
 ```
+
+## PuMaS Development Team
+
+The PuMaS team is supported by the
+[University of Maryland, Baltimore Center for Translational Medicine (CTM)](https://www.pharmacy.umaryland.edu/centers/ctm/).
+Vijay Ivaturi is the project lead and Chris Rackauckas is the lead developer.
+For information on developing and supporting PuMaS, please consult Vijay Ivaturi.
