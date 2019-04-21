@@ -107,12 +107,35 @@ the central functions and types used throughout PuMaS.
 Pages = [
     "basics/overview.md",
     "basics/models.md",
-    "basics/dosage_regimens.md",
+    "basics/doses_subjects_populations.md",
     "basics/simulation.md",
     "basics/estimation.md",
     "basics/nca.md",
+    "basics/faq.md",
 ]
 ```
+
+## Model Components
+
+This section of the documentation goes into more detail on the model components,
+specifying the possible domain types, dosage control parameters (DCP), and
+the various differential equation types for specifying problems with
+analytical solutions and alternative differential equations such as delay
+differential equations (DDEs), stochastic differential equations (SDEs), etc.
+
+```@contents
+Pages = [
+    "model_components/domains.md",
+    "model_components/dosing_control.md",
+    "model_components/dynamical_types.md",
+]
+```
+
+## Analysis
+
+This section of the documentation defines the analysis tooling. Essential
+tools such as diagnostics, plotting, report generation, and sensitivity
+analysis are discussed in detail in this portion.
 
 ## PuMaS Development Team
 
