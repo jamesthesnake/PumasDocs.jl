@@ -101,4 +101,26 @@ is a valid parameter specification.
 
 ## Distributional Domains
 
+Instead of using a `Domain` type from PuMaS, a `Distribution` can be used to
+specify a domain. For example,
+
+```julia
+Ω ~ Normal(0,1)
+```
+
+is a valid domain specification. If this is done, then the probability
+distribution is used and interpreted as the prior distribution. Implicitly,
+the domain of a distribution is treated as the support of the distribution.
+A distributional domain requires that the matching parameter is of the same
+type as a sample from the domain. For example, if `Ω ~ Normal(0,1)`, then `Ω`
+should be given as a scalar.
+
 ## Constrained
+
+The `Constrained` domain is for defining a `Constrained` probability distribution.
+`Constrained` takes in a distribution and has keyword arguments for `upper`
+and `lower` bounds. For example, `ψ ~ Constrained(MVNormal(Ω),lower=[0.0,0.0])`
+defines a `ψ` to be from the distributional domain which corresponds to a
+multivariate normal distribution, but is constrained to be positive. Like
+with the distributional domains, `Constrained` requires that the matching
+parameter is of the same type as a sample from the domain.
