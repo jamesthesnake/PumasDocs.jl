@@ -102,3 +102,15 @@ Pages = [
 The basics are the core principles of using PuMaS. An overview introduces the
 user to the basic design tenants, and manual pages proceed to give details on
 the central functions and types used throughout PuMaS.
+
+```@contents
+Pages = [
+    "basics/overview.md",
+    "basics/models.md",
+    "basics/dosage_regimens.md",
+    "basics/simulation.md",
+    "basics/estimation.md",
+    "basics/nca.md",
+    "basics/data_formats.md",
+]
+```
