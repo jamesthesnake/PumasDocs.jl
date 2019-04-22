@@ -140,8 +140,6 @@ analysis are discussed in detail in this portion.
 ```@contents
 Pages = [
     "analysis/diagnostics.md",
-    "analysis/plots.md",
-    "analysis/reports.md",
     "analysis/sensitivity.md",
 ]
 ```

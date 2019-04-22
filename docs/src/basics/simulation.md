@@ -69,8 +69,12 @@ using Plots
 plot(obs)
 ```
 
-All of the [Plots.jl attributes](http://docs.juliaplots.org/latest/attributes/)
-can be used on this command. For more information on using Plots.jl, please
+By default this generates a plot for each derived variable. To choose which
+variables to plot, the `obsnames` argument can be given which declares indices
+or derived variable names to plot. For example, `plot(obs,obsnames=[:dv1,:dv2])`
+would only plot the values `dv1` and `dv2`. In addition, all of the
+[Plots.jl attributes](http://docs.juliaplots.org/latest/attributes/)
+can be used in this `plot` command. For more information on using Plots.jl, please
 see [the Plots.jl tutorial](http://docs.juliaplots.org/latest/tutorial/).
 Note that if the simulated return is a `SimulatedPopulation`, then the plots
 overly the results of the various subjects.
