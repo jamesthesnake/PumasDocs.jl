@@ -75,14 +75,14 @@ using PuMaSTutorials
 PuMaSTutorials.open_notebooks()
 ```
 
-# Annotated Table Of Contents
+## Annotated Table Of Contents
 
 Below is an annotated table of contents with summaries to help guide you to the
 appropriate page. The materials shown here are links to the same materials
 in the sidebar. Additionally, you may use the search bar provided on the left
 to directly find the manual pages with the appropriate terms.
 
-## Tutorials
+### Tutorials
 
 These tutorials give an "example first" approach to learning PuMaS and establish
 the standardized nomenclature for the package. Additionally, ways of interfacing
@@ -97,7 +97,7 @@ Pages = [
 ]
 ```
 
-## Basics
+### Basics
 
 The basics are the core principles of using PuMaS. An overview introduces the
 user to the basic design tenants, and manual pages proceed to give details on
@@ -115,7 +115,7 @@ Pages = [
 ]
 ```
 
-## Model Components
+### Model Components
 
 This section of the documentation goes into more detail on the model components,
 specifying the possible domain types, dosage control parameters (DCP), and
@@ -131,11 +131,20 @@ Pages = [
 ]
 ```
 
-## Analysis
+### Analysis
 
 This section of the documentation defines the analysis tooling. Essential
 tools such as diagnostics, plotting, report generation, and sensitivity
 analysis are discussed in detail in this portion.
+
+```@contents
+Pages = [
+    "analysis/diagnostics.md",
+    "analysis/plots.md",
+    "analysis/reports.md",
+    "analysis/sensitivity.md",
+]
+```
 
 ## PuMaS Development Team
 
