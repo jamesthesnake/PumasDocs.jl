@@ -100,7 +100,7 @@ The `Population` constructor is simply `Population(subjects)`, where
 
 ## PuMaSNDF
 
-The PuMaSNSF data format is a specification for building a `Subject` from
+The PuMaSNDF is a specification for building a `Subject` from
 tabular data. Generally this tabular data is given by a database like a CSV.
 The following function parses the data:
 
