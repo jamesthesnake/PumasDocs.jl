@@ -104,7 +104,8 @@ The PuMaSNDF is a specification for building a `Subject` from
 tabular data. Generally this tabular data is given by a database like a CSV.
 The CSV has columns described as follows:
 
-- `id`: the ID of the individual. Each individual should have a unique integer.
+- `id`: the ID of the individual. Each individual should have a unique integer,
+  or string.
 - `time`: the time corresponding to the row. Should be unique per id, i.e. no
   duplicate time values for a given subject.
 - `evid`: the event id. 1 specifies a normal event. 3 means it's a reset event,
@@ -113,9 +114,9 @@ The CSV has columns described as follows:
   a final dose is given. Defaults to 0 if amt is 0 or missing, and 1 otherwise.
 - `amt`: the amount of the dose. If the `evid` column exists and is non-zero,
   this value should be non-zero. Defaults to 0.
-- `ii`: the inter-dose interval. For steady state events, this is the length of
-  time between successive doses. When `addl` is specified, this is the length
-  of time to the next dose. Defaults to 0, and is required to be non-zero on
+- `ii`: the inter-dose interval. When `addl` is specified, this is the length
+  of time to the next dose. For steady state events, this is the length of
+  time between successive doses. Defaults to 0, and is required to be non-zero on
   rows where a steady-state event is specified.  
 - `addl`: the number of additional doses of the same time to give. Defaults to 0.
 - `rate`: the rate of administration. If 0, then the dose is instantaneous.
