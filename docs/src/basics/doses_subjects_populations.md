@@ -102,7 +102,46 @@ The `Population` constructor is simply `Population(subjects)`, where
 
 The PuMaSNDF is a specification for building a `Subject` from
 tabular data. Generally this tabular data is given by a database like a CSV.
-The following function parses the data:
+The CSV has columns described as follows:
+
+- `id`: the ID of the individual. Each individual should have a unique integer.
+- `time`: the time corresponding to the row. Should be unique per id, i.e. no
+  duplicate time values for a given subject.
+- `evid`: the event id. 1 specifies a normal event. 3 means it's a reset event,
+  meaning that the value of the dynamical variable is reset to the `amt` at the
+  dosing event. If 4, then the value is reset (to the steady state), and then
+  a final dose is given. Defaults to 0 if amt is 0 or missing, and 1 otherwise.
+- `amt`: the amount of the dose. If the `evid` column exists and is non-zero,
+  this value should be non-zero. Defaults to 0.
+- `ii`: the inter-dose interval. For steady state events, this is the length of
+  time between successive doses. When `addl` is specified, this is the length
+  of time to the next dose. Defaults to 0, and is required to be non-zero on
+  rows where a steady-state event is specified.  
+- `addl`: the number of additional doses of the same time to give. Defaults to 0.
+- `rate`: the rate of administration. If 0, then the dose is instantaneous.
+  Otherwise the dose is administrated at a constant rate for a duration equal
+  to `amt/rate`. Defaults to 0.
+- `ss`: an indicator for whether the dose is a steady state dose. A steady state
+  dose is defined as the result of having applied the dose with the interval `ii`
+  infinitely many successive times. 0 indicates that the dose is not a steady
+  state dose. 1 indicates that the dose is a steady state dose. 2 indicates that
+  it is a steady state dose that is added to the previous amount. The default
+  is 0.
+- `cmt`: the compartment being dosed. Defaults to 1.
+- `duration`: the duration of administration. If 0, then the dose is instantaneous.
+  Otherwise the dose is administrated at a constant rate equal to `amt/duration`.
+  Defaults to 0.
+- Observation and covariate columns should be given as a time series of values
+  of matching type. Constant covariates should be constant through the full
+  column. Time points without a measurement should be denoted by a `.`.
+
+If a column does not exists, its values are imputed to be the defaults.
+Special notes:
+
+- If `rate` and `duration` exist, then it is enforced that `amt=rate*duration`
+- All values and header names are interpreted as lower case.
+
+### PuMaSNDF Parsing
 
 ```julia
 process_nmtran(data,cvs=Symbol[],dvs=Symbol[:dv];
@@ -120,5 +159,16 @@ The arguments are as follows:
 - `cvs` is the list of symbols for the header names of the covariate columns.
 - `dvs` is the list of symbols for the header names of the observation data columns.
 
-The other arguments signify the column names used for selecting the id, times,
-and dosage regimen specification.
+The other arguments are optional and allow changing the column names from their
+default.
+
+### NMTRAN Parsing
+
+Additionally, there exist a parsing function `process_nmtran` for parsing
+general NONMEM files. This function is a work-in-progress.
+
+```julia
+process_nmtran(data,cvs=Symbol[],dvs=Symbol[:dv];
+                        id=:id, time=:time, evid=:evid, amt=:amt, addl=:addl,
+                        ii=:ii, cmt=:cmt, rate=:rate, ss=:ss)
+```
