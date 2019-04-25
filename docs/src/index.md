@@ -1,8 +1,8 @@
 # PuMaS
 
-PuMaS (PharmascUtical Modeling And Simulation) is a suite of tools for
-developing, simulating, fitting, and analyzing pharmaceutical models. The
-purpose of this framework is to bring efficient implementations of all aspects
+PuMaS (PharmaceuUtical Modeling And Simulation) is a suite of tools for
+developing, simulating, fitting, and analyzing pharmaceutical models, with an initial focus on
+pharmacometric models. The purpose of this framework is to bring efficient implementations of all aspects
 of pharmaceutical modeling under one cohesive package. **While PuMaS is still
 in beta**, the package currently includes:
 
@@ -27,15 +27,16 @@ user experience.
 
 ### Supporting and Citing
 
-The software in this ecosystem was developed as part of academic research. If
-you would like to help support PuMaS, please star the repository as such metrics
-may help us secure funding in the future. If you use PuMaS software as part of
-your research, teaching, or other activities, we would be grateful if you could
-cite our work. Our suggested citation is:
+The software in this ecosystem was developed as part of academic research.
+If you use PuMaS software as part of your research, teaching, or other activities,
+we would be grateful if you could cite our work. Our suggested citation is:
+
+**TBD**
 
 ## Getting Started: Installation and First Steps
 
-To install the package, use the following commands inside the Julia REPL:
+PuMaS is distributed via JuliaPro from Julia Computing Inc. To install the package,
+use the following commands inside the Julia REPL:
 
 ```julia
 using Pkg
@@ -56,7 +57,7 @@ to start using PuMaS!
 To start understanding the package in more detail, please checkout the tutorials
 at the start of this manual. **We highly suggest that all new users start with
 the Introduction to PuMaS tutorial!** If you find any example where there seems
-to be an error, please open an issue.
+to be an error, please open an issue [here]().
 
 For the most up to date information on using the package, please join the Slack channel.
 

@@ -12,17 +12,17 @@ via the two methods.
 ## Defining Data for Estimation
 
 Estimation is done by looking at the likelihood of likewise names. Thus, for
-example if `subject.observations` is a `NamedTuple` with names `conc` and
-`dv`, the likelihood calculation will be between values from `derived` named
-`conc` and `dv`. If `conc` is a scalar in the observation data, then `conc`
-from `derived` should also be a scalar. Likewise, if `conc` is an array like
-a time series, then `conc` should be a size-matching time series when returned
+example if `subject.observations` is a `NamedTuple` with names `dv` and
+`resp`, the likelihood calculation will be between values from `derived` named
+`dv` and `resp`. If `dv` is a scalar in the observation data, then `dv`
+from `derived` should also be a scalar. Likewise, if `dv` is an array like
+a time series, then `dv` should be a size-matching time series when returned
 from `derived`. Note that likelihoods are calculated between the probability
 distribution from `derived` and the matching observation from
 `subject.observations`. If no likelihood is associated with a `derived` value,
 then the value has an implicit standard normal interpretation, which amounts
 to having the L2 Euclidian distance taken as the likelihood during fitting
-proceedures.
+procedures.
 
 **Note: Currently only `BayesMCMC` and `LaplaceI` support multiple output series.
 all other likelihood approximations must have the derived and observation data
@@ -82,7 +82,7 @@ The return type of `fit` is a `FittedPuMaSModel`.
 The following choices are available for the likelihood approximations:
 
 - `FO()`: first order approximation.
-- `FOI()`: first order approximation with interaction.
+~~- `FOI()`: first order approximation with interaction.~~
 - `FOCE()`: first order conditional estimation.
 - `FOCEI()`: first order conditional estimation with interaction.
 - `Laplace()`: second order Laplace approximation
