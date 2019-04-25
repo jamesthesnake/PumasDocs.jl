@@ -11,25 +11,33 @@ or by using the PuMaS NLME Data format (named PuMaSNDF).
 Both the `DosageRegimen` and the `PuMaSNDF` utilize the same terminology for
 describing a dose. The definition of the values are as follows:
 
-- `amt`: the amount of the dose. This is the only required value.
-- `time`: the time at which the dose is given. Defaults to 0.
-- `evid`: the event id. 1 specifies a normal event. 3 means it's a reset event,
-  meaning that the value of the dynamical variable is reset to the `amt` at the
-  dosing event. If 4, then the value is reset (to the steady state), and then
-  a final dose is given. Defaults to 1.
+- `amt`: the amount of the dose. _This is the only required value_.
+- `time`: the time at which the dose is given. Defaults to `0`.
+- `evid`: the event id.
+  - `1` specifies a normal event.
+  - `3` means it's a reset event - The kinetic system is re-initialized.
+  Time is reset to the time of the event record, the amounts in each compartment
+  are reset to zero. The `dv` data item is ignored. Dose-related data items must be zero.
+  ~~meaning that the value of the dynamical variable is reset to the `amt` at the
+  dosing event.~~
+  - 4 is a reset and dose event - The system is first reset as in `evid=3`,
+  and then a dose is given. The `dv` data item is ignored~~., then the value is reset (to the steady state), and then
+  a final dose is given. Defaults to 1.~~
 - `ii`: the interdose interval. For steady state events, this is the length of
   time between successive doses. When `addl` is specified, this is the length
-  of time to the next dose. Defaults to 0.
-- `addl`: the number of additional doses of the same time to give. Defaults to 0.
-- `rate`: the rate of administration. If 0, then the dose is instantaneous.
+  of time to the next dose. Defaults to `0`.
+- `addl`: the number of additional doses of the same type to give. Defaults to `0`. In a dose
+(`evid=1`) or reset-dose (`evid=4`), addl describes how many additional doses,
+exactly like the present dose, should be given.
+- `rate`: the rate of administration. If `0`, then the dose is instantaneous.
   Otherwise the dose is administrated at a constant rate for a duration equal
   to `amt/rate`.
 - `ss`: an indicator for whether the dose is a steady state dose. A steady state
   dose is defined as the result of having applied the dose with the interval `ii`
-  infinitely many successive times. 0 indicates that the dose is not a steady
-  state dose. 1 indicates that the dose is a steady state dose. 2 indicates that
+  infinitely many successive times. `0` indicates that the dose is not a steady
+  state dose. `1` indicates that the dose is a steady state dose. `2` indicates that
   it is a steady state dose that is added to the previous amount. The default
-  is 0.
+  is `0`.
 
 ## The Subject Constructor
 
@@ -100,7 +108,7 @@ The `Population` constructor is simply `Population(subjects)`, where
 
 ## PuMaSNDF
 
-The PuMaSNDF is a specification for building a `Subject` from
+The PuMaSNDF is a specification for building a `Subject` / `Population` from
 tabular data. Generally this tabular data is given by a database like a CSV.
 The CSV has columns described as follows:
 
@@ -108,29 +116,34 @@ The CSV has columns described as follows:
   or string.
 - `time`: the time corresponding to the row. Should be unique per id, i.e. no
   duplicate time values for a given subject.
-- `evid`: the event id. 1 specifies a normal event. 3 means it's a reset event,
-  meaning that the value of the dynamical variable is reset to the `amt` at the
-  dosing event. If 4, then the value is reset (to the steady state), and then
-  a final dose is given. Defaults to 0 if amt is 0 or missing, and 1 otherwise.
+- - `evid`: the event id.
+  - `1` specifies a normal event.
+  - `3` means it's a reset event - The kinetic system is re-initialized.
+  Time is reset to the time of the event record, the amounts in each compartment
+  are reset to zero. The `dv` data item is ignored. Dose-related data items must be zero.
+  - 4 is a reset and dose event - The system is first reset as in `evid=3`,
+  and then a dose is given. The `dv` data item is ignored
+  Defaults to 0 if amt is 0 or missing, and 1 otherwise.
 - `amt`: the amount of the dose. If the `evid` column exists and is non-zero,
   this value should be non-zero. Defaults to 0.
-- `ii`: the inter-dose interval. When `addl` is specified, this is the length
-  of time to the next dose. For steady state events, this is the length of
-  time between successive doses. Defaults to 0, and is required to be non-zero on
-  rows where a steady-state event is specified.  
-- `addl`: the number of additional doses of the same time to give. Defaults to 0.
-- `rate`: the rate of administration. If 0, then the dose is instantaneous.
-  Otherwise the dose is administrated at a constant rate for a duration equal
-  to `amt/rate`. Defaults to 0.
+- `ii`: the interdose interval. For steady state events, this is the length of
+    time between successive doses. When `addl` is specified, this is the length
+    of time to the next dose. Defaults to `0`.
+- `addl`: the number of additional doses of the same type to give. Defaults to `0`. In a dose
+  (`evid=1`) or reset-dose (`evid=4`), addl describes how many additional doses,
+  exactly like the present dose, should be given.
+- `rate`: the rate of administration. If `0`, then the dose is instantaneous.
+    Otherwise the dose is administrated at a constant rate for a duration equal
+    to `amt/rate`.
 - `ss`: an indicator for whether the dose is a steady state dose. A steady state
-  dose is defined as the result of having applied the dose with the interval `ii`
-  infinitely many successive times. 0 indicates that the dose is not a steady
-  state dose. 1 indicates that the dose is a steady state dose. 2 indicates that
-  it is a steady state dose that is added to the previous amount. The default
-  is 0.
+    dose is defined as the result of having applied the dose with the interval `ii`
+    infinitely many successive times. `0` indicates that the dose is not a steady
+    state dose. `1` indicates that the dose is a steady state dose. `2` indicates that
+    it is a steady state dose that is added to the previous amount. The default
+    is `0`.
 - `cmt`: the compartment being dosed. Defaults to 1.
 - `duration`: the duration of administration. If 0, then the dose is instantaneous.
-  Otherwise the dose is administrated at a constant rate equal to `amt/duration`.
+  Otherwise the dose is administered at a constant rate equal to `amt/duration`.
   Defaults to 0.
 - Observation and covariate columns should be given as a time series of values
   of matching type. Constant covariates should be constant through the full
