@@ -1,5 +1,9 @@
 # Overview of PuMaS
 
+PuMaS is a collection of a modules that facilitate workflows related to
+data analysis in the pre-clinical and clinical development stages of drug development.
+This document provides a general overview of each of these workflows.
+
 ## The PuMaS NLME Workflow
 
 The core PuMaS NLME workflow is:
@@ -8,11 +12,11 @@ The core PuMaS NLME workflow is:
    but not necessarily the values.
 2. Define a `Subject` and `Population`. These structure specify the dosage
    regimens of the patients, their covariates, and possible observation data
-   to fit against. This can be done programmatically or by parsing tabular
+   to fit against. This can be done programmatically or by reading in tabular
    input data.
-3. Define a `param` `NamedTuple` for the current parameters. For simulation,
-   these are the parameter values to simulate with. For estimation, these are
-   the initial conditions.
+3. Define a `param` `NamedTuple` for the parameters describing the structure of
+the `PuMaSModel`. For simulation, these are the parameter values to simulate with.
+For estimation, these are the initial conditions.
 4. Call the model API functions (`simobs` and `fit`) to perform the simulations
    and estimation. Both functions act on the pieces defined before.
 
@@ -39,10 +43,10 @@ manual.
 
 ## The PuMaS NCA Module Workflow
 
-The NCA submodule work by:
+The NCA submodule works by:
 
 1. Defining an `NCASubject` or `NCAPopulation`, either programmatically or by
-   parsing tabular data in the `PuMaSNCADF` format.
+   reading tabular data in the `PuMaSNCADF` format.
 2. Running NCA functions on the subject or population, such as `NCA.auc`, or
    generating a full `NCA.report`.
 

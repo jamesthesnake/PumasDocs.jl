@@ -1,8 +1,8 @@
-# Simulation of PuMaS Models
+# Simulation from PuMaS Models
 
 ## The `simobs` Function
 
-Simulation of PuMaS models are performed via the `simobs` function. The function
+Simulation of PuMaS models, `PuMaSModel`, are performed via the `simobs` function. The function
 is given by the values:
 
 ```julia
@@ -42,11 +42,17 @@ The result of `simobs` function is a `SimulatedObservation` if the `data` was
 
 ## Handling Simulated Returns
 
-A `SimulatedObservation` can be accessed via its fields which are:
+```julia
+sim = simobs(m,data,param)
+```
+`sim` is a `SimulatedObservation` and can be accessed via its fields which are:
 
 - `subject`: the `Subject` used to generate the observation
 - `times`: the times associated with the observations
 - `observed`: the resulting observations of the simulation
+
+In the above example, `sim.subject`, `sim.times` and `sim.observations` will return
+the corresponding `Subject`, `times` and `observed` values for that subject.
 
 If the `@model` DSL is used, then `observed` is a `NamedTuple` where the names
 give the associated values. From the function-based interface, `observed` is
@@ -54,14 +60,14 @@ the chosen return type of the `observed` function in the model specification.
 
 A `SimulatedPopulation` is a collection of `SimulatedObservation`s, and when
 indexed like `sim[i]` it returns the `SimulatedObservation` of the `i`th
-simulation subject.
+simulation subject which can be further used to access the individual fields.
 
 ## Visualizing Simulated Returns
 
 These objects have automatic plotting and dataframe visualization. To plot
 a simulation return, simply call plot on the output using
 [Plots.jl](https://github.com/JuliaPlots/Plots.jl). For example, the following
-will run a simulation and plot the observed variabes:
+will run a simulation and plot the observed variables:
 
 ```julia
 obs = simobs(m,data,param)
@@ -77,7 +83,7 @@ would only plot the values `dv1` and `dv2`. In addition, all of the
 can be used in this `plot` command. For more information on using Plots.jl, please
 see [the Plots.jl tutorial](http://docs.juliaplots.org/latest/tutorial/).
 Note that if the simulated return is a `SimulatedPopulation`, then the plots
-overly the results of the various subjects.
+overlay the results of the various subjects.
 
 To generate the DataFrame associated with the observed outputs, simply call
 `DataFrame` on the simulated return. For example, the following builds the
