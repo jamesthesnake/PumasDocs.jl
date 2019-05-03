@@ -40,19 +40,38 @@ to use `auc` on `NCAPopulation`, one would use `NCA.auc(ncapop)`.
 The PuMaSNCADF is a standardized format for tabular data for NCA. The format has
 the following columns:
 
-- `id`: The `id` of the subject.
-- `conc`: the concentration time series measurements.
+- `id`: The string `id` of the subject.
+- `conc`: the concentration time series measurements. Values must be floating
+  point numbers or missing.
 - `time`: the time at which the concentration was measured.
+- `occasion`: the occasion for the observation. Must be an integer value at each time
+  point.
+- `amt`: the amount of a dose. Must be a floating point value at each dosing
+  time, and otherwise missing.
+- `route`: the route of administration. Possible choices are `IV` for intravenous,
+  `EV` for extravascular, and `Inf` for infusion.
+- `rate`: the dosing rate. Should be a floating point value or missing.
+- Grouping variables: Any additional column may be chosen as for grouping the
+  output by.
 
 ### Parsing PuMaSNCADF
 
 The parsing function for the PuMaSNCADF is as follows:
 
 ```julia
-parse_ncadata(df; id=:ID, group=nothing, time=:time, conc=:conc, occasion=nothing,
-              amt=nothing, formulation=nothing, route=nothing,# rate=nothing,
-              duration=nothing, ii=nothing, concu=true, timeu=true, amtu=true, warn=true, kwargs...)
+parse_ncadata(df; group=nothing, ii=nothing,
+                  concu=true, timeu=true, amtu=true, verbose=true)
 ```
 
-The required positional argument is either a string which is the path to a CSV
-file, or a `DataFrame` of tabular data for use in the NCA.
+These arguments are:
+
+- `df`: the required positional argument. This is either a string which is the
+  path to a CSV file, or a `DataFrame` of tabular data for use in the NCA.
+- `group`: the column to group the output by. Defaults to no grouping.
+- `ii`: the interdose interval. Used to specify the interval length for steady
+  state dosing.
+- `concu`: the units for concentration. Defaults to no units.
+- `amtu`: the units for dosing amount. Defaults to no units.
+- `timeu`: the units for time. Defaults to no units.
+- `verbose`: When true, warnings will be thrown when the output is does not
+  match PuMaSNCADF. Defaults to true.
