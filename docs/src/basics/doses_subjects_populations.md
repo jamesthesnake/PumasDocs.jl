@@ -17,7 +17,7 @@ describing a dose. The definition of the values are as follows:
   - `1` specifies a normal event.
   - `3` means it's a reset event - The kinetic system is re-initialized.
   The amounts in each compartment
-  are reset to zero. The `dv` data item is ignored. Dose-related data items must be zero.
+  are reset to zero. Dose-related data items must be zero.
   ~~meaning that the value of the dynamical variable is reset to the `amt` at the
   dosing event.~~
   - 4 is a reset and dose event - The system is first reset as in `evid=3`,
