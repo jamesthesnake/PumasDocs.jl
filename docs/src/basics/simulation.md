@@ -2,7 +2,7 @@
 
 ## The `simobs` Function
 
-Simulation of PuMaS models are performed via the `simobs` function. The function
+Simulation of a `PuMaSModel` are performed via the `simobs` function. The function
 is given by the values:
 
 ```julia
@@ -42,7 +42,14 @@ The result of `simobs` function is a `SimulatedObservation` if the `data` was
 
 ## Handling Simulated Returns
 
-A `SimulatedObservation` can be accessed via its fields which are:
+When running
+
+```julia
+sim = simobs(m,data,param)
+```
+
+`sim` is a `SimulatedObservation` which can be accessed via its fields. These
+fields are:
 
 - `subject`: the `Subject` used to generate the observation
 - `times`: the times associated with the observations
@@ -61,7 +68,7 @@ simulation subject.
 These objects have automatic plotting and dataframe visualization. To plot
 a simulation return, simply call plot on the output using
 [Plots.jl](https://github.com/JuliaPlots/Plots.jl). For example, the following
-will run a simulation and plot the observed variabes:
+will run a simulation and plot the observed variables:
 
 ```julia
 obs = simobs(m,data,param)
@@ -77,7 +84,7 @@ would only plot the values `dv1` and `dv2`. In addition, all of the
 can be used in this `plot` command. For more information on using Plots.jl, please
 see [the Plots.jl tutorial](http://docs.juliaplots.org/latest/tutorial/).
 Note that if the simulated return is a `SimulatedPopulation`, then the plots
-overly the results of the various subjects.
+overlay the results of the various subjects.
 
 To generate the DataFrame associated with the observed outputs, simply call
 `DataFrame` on the simulated return. For example, the following builds the

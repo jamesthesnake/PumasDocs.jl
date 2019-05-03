@@ -1,6 +1,6 @@
 # PuMaS
 
-PuMaS (PharmascUtical Modeling And Simulation) is a suite of tools for
+PuMaS (PharmaceUtical  Modeling And Simulation) is a suite of tools for
 developing, simulating, fitting, and analyzing pharmaceutical models. The
 purpose of this framework is to bring efficient implementations of all aspects
 of pharmaceutical modeling under one cohesive package. **While PuMaS is still
@@ -27,15 +27,16 @@ user experience.
 
 ### Supporting and Citing
 
-The software in this ecosystem was developed as part of academic research. If
-you would like to help support PuMaS, please star the repository as such metrics
-may help us secure funding in the future. If you use PuMaS software as part of
-your research, teaching, or other activities, we would be grateful if you could
-cite our work. Our suggested citation is:
+The software in this ecosystem was developed as part of academic research.
+If you use PuMaS software as part of your research, teaching, or other activities,
+we would be grateful if you could cite our work. Our suggested citation is:
+
+**TBD**
 
 ## Getting Started: Installation and First Steps
 
-To install the package, use the following commands inside the Julia REPL:
+PuMaS is distributed via JuliaPro from Julia Computing Inc. To install the package,
+use the following commands inside the JuliaPro REPL:
 
 ```julia
 using Pkg

@@ -29,8 +29,9 @@ documentation of the `Distribution` types, please see
 
 ## The `@model` DSL
 
-The `@model` DSL allows for simplified NLME definitions. The components of a
-model (in order) are as follows:
+The `@model` DSL allows for simplified NLME definitions. This interface can also
+be used to define simpler linear and probability distribution models without
+the mixed effects. The components of a model (in order) are as follows:
 
 1. `@param` defines the fixed effects and other parameters of the model, along
    with the domains and constraints on the parameters (for estimation).
@@ -70,7 +71,7 @@ Many of these domains allow specifying bounds, for example, we can specify
 θ as a scalar between 0.0 and 1.0 via:
 
 ```julia
-θ ∈ RealDomain(lower=0.0,upper=1.0)
+θ ∈ RealDomain(lower=0.0, upper=1.0)
 ```
 
 For the full specifications of the domain types, please the [the Domains page]().
@@ -84,7 +85,7 @@ comes from a standard normal distribution via:
 
 Implicitly, the domain of θ is the support of the probability distributions.
 Thus for this example, the domain of θ is the same as `RealDomain()`. However,
-if θ the value of θ is not specified in the parameter list during simulation,
+if the value of θ is not specified in the parameter list during simulation,
 θ will automatically be sampled from this distribution. Additionally, this
 probability distribution can be thought of as the prior distribution on
 θ and is utilized in Bayesian estimation routines.
@@ -152,7 +153,7 @@ Standard Julia syntax can be used within this block, any externally defined
 Julia functions can be used in this block, and the resulting variables can
 be any Julia type. One consequence of allowing these values to be any Julia
 type is that the pre-processed variables can be Julia functions. For example,
-we can define Ka as a time-dependent function by using Julia's
+we can define `Ka` as a time-dependent function by using Julia's
 [anonymous function syntax]():
 
 ```julia
@@ -163,7 +164,7 @@ Ka = t -> t*θ[1]
 
 ```julia
 @pre begin
-    Ka1     = θ[1]
+    Ka     = θ[1]
     CL      = θ[2]*exp(η[1])
     Vc      = t -> t*θ[3]*exp(η[2])
 end
@@ -186,7 +187,9 @@ the dynamical variable `Central` divided by the parameter `V`, we would write
 the equation:
 
 ```julia
-conc = Central / V
+@vars begin
+   conc = Central / V
+end
 ```
 
 Note that the variable `t` for time can be utilized within these expressions.
@@ -195,7 +198,9 @@ in the `@derived` and `@observed` blocks it stands for the current time in the
 time series. For example,
 
 ```julia
-conc_t = conc / t
+@vars begin
+   conc_t = conc / t
+end
 ```
 
 is the value of `conc` divided by `t`.
@@ -217,20 +222,23 @@ that will not be carried outside of the block.
 This block defines the initial conditions of the dynamical model in terms of
 the parameters, random effects, and pre-processed variables. It is defined
 by a series of equality (`=`) statements. For example, to set the initial
-condition of the `Central` dynamical variable to be the value of the 5th term
+condition of the `Response` dynamical variable to be the value of the 5th term
 of the parameter θ, we would use the syntax:
 
 ```julia
-Central = θ[5]
+Response = θ[5]
 ```
 
 The block is then given by a sequence of such statements, such as:
 
 ```julia
 @init begin
-   Central = θ[5]
+   Response1 = θ[5]
+   Response2 = Kin/Kout
 end
 ```
+
+where `Kin` and `Kout` were defined earlier in the `@pre` block.
 
 Any variable omitted from this block is given the default initial condition
 of 0. If the block is omitted, then all dynamical variables are initialized
@@ -298,8 +306,8 @@ conc = @. Central / V
 ```
 
 defines an array `conc` to be output from the model. Notice that we used Julia's
-[broadcast syntax]() for specifying that every value of Central is to be divided
-by V. Note that any standard Julia syntax (and externally defined functions)
+[broadcast syntax]() (`@.`) for specifying that every value of Central is to be divided
+by `V`. Note that any standard Julia syntax (and externally defined functions)
 are allowed in this block.
 
 Error models are defined by `~` statements to probability distributions. For
@@ -307,7 +315,9 @@ example, the following defines a time series of Normal distributions centered
 around the value of `conc` with a variance dependent on `conc` and `ϵ`:
 
 ```julia
-dv ~ @. Normal(conc,conc*ϵ)
+@derived begin
+   dv ~ @. Normal(conc,conc*ϵ)
+end
 ```
 
 The likelihood of these distributions are utilized in the maximum likelihood
@@ -331,7 +341,11 @@ suite are given with via the `@nca` macro. For example, we can perform an NCA
 analysis via:
 
 ```julia
-nca := @nca conc
+@derived begin
+   conc = @. Central / V
+   dv ~ @. Normal(conc,conc*ϵ)
+   nca := @nca conc
+end
 ```
 
 to build an `NCASubject` using the time series given by the derived or dynamical
@@ -339,9 +353,14 @@ variable `conc`. Once defined, the [functionality of the NCA module]() can be
 used to define derived variables via NCA diagnostics, for example:
 
 ```julia
-auc =  NCA.auc(nca)
-thalf =  NCA.thalf(nca)
-cmax = NCA.cmax(nca)
+@derived begin
+   conc = @. Central / V
+   dv ~ @. Normal(conc,conc*ϵ)
+   nca := @nca conc
+   auc =  NCA.auc(nca)
+   thalf =  NCA.thalf(nca)
+   cmax = NCA.cmax(nca)
+end
 ```
 
 Notice that the `@derived` block can mix values of different types (such as
@@ -396,9 +415,9 @@ types. These `Domain` types are defined [on the Domains page](). For example,
 the following is a value `ParamSet` construction:
 
 ```julia
-paramset = ParamSet((θ = VectorDomain(4, lower=zeros(4), init=ones(4)), # parameters
+paramset = ParamSet((θ = VectorDomain(4, lower=zeros(4)), # parameters
               Ω = PSDDomain(2),
-              Σ = RealDomain(lower=0.0, init=1.0),
+              Σ = RealDomain(lower=0.0),
               a = ConstDomain(0.2)))
 ```
 

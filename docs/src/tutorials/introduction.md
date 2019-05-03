@@ -1,6 +1,6 @@
 # Introduction to PuMaS
 
-This is an introduction to PuMaS, a software for pharmacometric modeling and
+This is an introduction to PuMaS, a software for pharmaceutical modeling and
 simulation.
 
 The basic workflow of PuMaS is:
@@ -34,7 +34,7 @@ model = @model begin
     end
 
     @pre begin
-        Ka1     = θ[1]
+        Ka     = θ[1]
         CL      = θ[2]*exp(η[1])
         Vc      = θ[3]*exp(η[2])
         Q       = θ[4]*exp(η[3])
@@ -49,19 +49,19 @@ model = @model begin
     end
 
     @init begin
-        Resp = θ[6]/θ[7]
+        Resp = Kin/Kout
     end
 
     @dynamics begin
-        Ev1'    = -Ka1*Ev1
-        Cent'   =  Ka1*Ev1 - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
+        Depot'    = -Ka1*Depot
+        Cent'   =  Ka1*Depot - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
         Periph' =  Q*(Cent/Vc)  - Q*(Periph/Vp)
         Resp'   =  Kin*(1-(IMAX*(Cent/Vc)^γ/(IC50^γ+(Cent/Vc)^γ)))  - Kout*Resp
     end
 
     @derived begin
-        ev1    = Ev1
-        cp     = Cent / θ[3]
+        depot    = Depot
+        cp     = Cent / Vc
         periph = Periph
         resp   = Resp
     end
@@ -71,7 +71,7 @@ regimen = DosageRegimen([15,15,15,15], time=[0,4,8,12])
 subject = Subject(id=1,evs=regimen)
 
 p = (θ = [
-          1, # Ka1  Absorption rate constant 1 (1/time)
+          1, # Ka  Absorption rate constant 1 (1/time)
           1, # CL   Clearance (volume/time)
           20, # Vc   Central volume (volume)
           2, # Q    Inter-compartmental clearance (volume/time)
@@ -83,7 +83,7 @@ p = (θ = [
           1, # γ    Emax model sigmoidicity
           0, # Vmax Maximum reaction velocity (mass/time)
           2  # Km   Michaelis constant (mass/volume)
-          ],)
+          ],) # single element `NamedTuple`s end with a comma
 
 sim = simobs(model, subject, p)
 plot(sim)
@@ -99,7 +99,7 @@ and generated a plot of the results. Now let's walk through this process!
 
 ## Using the Model Macro
 
-First we define the model. The simplist way to do is via the `@model` DSL. Inside of
+First we define the model. The simplest way to do is via the `@model` DSL. Inside of
 this block we have a few subsections. The first of which is `@param`. In here
 we define what kind of parameters we have. For this model we will define a
 vector parameter `θ` of size 12:
@@ -122,7 +122,7 @@ using LinearAlgebra
 end
 ```
 
-Notice that here we imported `I` from LinearAlgebra and and said that our
+Notice that here we imported `I` from LinearAlgebra and said that our
 Normal distribution's covariance is said `I`, the identity matrix.
 
 Now we define our pre-processing step in `@pre`. This is where we choose how the
@@ -146,14 +146,14 @@ give them a name as follows:
 end
 ```
 
-Next we define the `@init` block which gives the inital values for our
+Next we define the `@init` block which gives the initial values for our
 differential equations. Any variable not mentioned in this block is assumed to
 have a zero for its starting value. We wish to only set the starting value for
 `Resp`, and thus we use:
 
 ```{julia;eval=false}
 @init begin
-    Resp = θ[6]/θ[7]
+    Resp = Kin/Kout
 end
 ```
 
@@ -163,8 +163,8 @@ we use:
 
 ```{julia;eval=false}
 @dynamics begin
-    Ev1'    = -Ka1*Ev1
-    Cent'   =  Ka1*Ev1 - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
+    Depot'    = -Ka1*Depot
+    Cent'   =  Ka1*Depot - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
     Periph' =  Q*(Cent/Vc)  - Q*(Periph/Vp)
     Resp'   =  Kin*(1-(IMAX*(Cent/Vc)^γ/(IC50^γ+(Cent/Vc)^γ)))  - Kout*Resp
 end
@@ -175,7 +175,7 @@ output values using the following:
 
 ```{julia;eval=false}
 @derived begin
-    ev1    = Ev1
+    depot    = Depot
     cp     = Cent / θ[3]
     periph = Periph
     resp   = Resp
@@ -188,7 +188,7 @@ Now let's build a subject to simulate the model with. A subject defines three
 components:
 
 1. The dosage regimen
-2. The covariates of the indvidual
+2. The covariates of the individual
 3. Observations associated with the individual.
 
 Our model did not make use of covariates so we will ignore (2) for now, and
@@ -227,8 +227,8 @@ initialized values, then we pass them in. Let's simulate subject 1 with a set
 of chosen parameters:
 
 ```julia
-fixeffs = (θ = [
-          1, # Ka1  Absorption rate constant 1 (1/time)
+param = (θ = [
+          1, # Ka  Absorption rate constant 1 (1/time)
           1, # CL   Clearance (volume/time)
           20, # Vc   Central volume (volume)
           2, # Q    Inter-compartmental clearance (volume/time)
@@ -242,7 +242,7 @@ fixeffs = (θ = [
           2  # Km   Michaelis constant (mass/volume)
           ],)
 
-sim = simobs(model, subject, fixeffs)
+sim = simobs(model, subject, param)
 ```
 
 We can then plot the simulated observations by using the `plot` command:
@@ -273,11 +273,20 @@ initial values similarly:
 
 ```julia
 randeffs = (η = rand(11),)
-sim = simobs(model, subject, fixeffs, randeffs)
+sim = simobs(model, subject, param, randeffs)
 plot(sim)
 ```
 
 ![show plot]()
+
+If a population simulation is required with no random effects, then the values of
+the η's can be set to zero that will result in a simulation only at the mean level:
+
+```julia(eval=false)
+randeffs = (η = zeros(11),)
+sim = simobs(model, subject, fixeffs, randeffs)
+plot(sim)
+```
 
 The points which are saved are by default at once every hour until one day after
 the last event. If you wish to change the saving time points, pass the keyword
@@ -285,7 +294,7 @@ argument `obstimes`. For example, let's save at every `0.1` hours and run the
 simulation for 19 hours:
 
 ```julia
-sim = simobs(model, subject, fixeffs, randeffs, obstimes = 0:0.1:19)
+sim = simobs(model, subject, param, randeffs, obstimes = 0:0.1:19)
 plot(sim)
 ```
 
@@ -295,7 +304,7 @@ plot(sim)
 
 The resulting `SimulatedObservations` type has two fields. `sim.times` is an
 array of time points for which the data was saved. `sim.derived` is the result
-of the derived variables. From there, the derived variabes are accessed by name.
+of the derived variables. From there, the derived variables are accessed by name.
 For example,
 
 ```julia
@@ -310,11 +319,11 @@ DataFrame(sim)
 ```
 
 From there, any Julia tools can be used to analyze these arrays and DataFrames.
-For example, if we wish the plot the result of `ev1` over time, we'd use the
+For example, if we wish the plot the result of `depot` over time, we'd use the
 following:
 
 ```julia
-plot(sim.times,sim[:ev1])
+plot(sim.times,sim[:depot])
 ```
 
 Using these commands, a Julia program can be written to post-process the
