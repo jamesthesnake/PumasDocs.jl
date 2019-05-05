@@ -12,7 +12,7 @@ The `NCASubject` constructor is as follows:
 ```julia
 NCASubject(conc, time;
            concu=true, timeu=true,
-           id=1, group=nothing, dose::T=nothing, llq=nothing, clean=true,
+           id=1, group=nothing, dose=nothing, llq=nothing, clean=true,
            lambdaz=nothing, ii=nothing, kwargs...)
 ```
 
@@ -48,9 +48,9 @@ the following columns:
   point.
 - `amt`: the amount of a dose. Must be a floating point value at each dosing
   time, and otherwise missing.
-- `route`: the route of administration. Possible choices are `IV` for intravenous,
-  `EV` for extravascular, and `Inf` for infusion.
-- `rate`: the dosing rate. Should be a floating point value or missing.
+- `route`: the route of administration. Possible choices are `iv` for intravenous,
+  `ev` for extravascular, and `inf` for infusion.
+- `duration`: the infusion duration. Should be a floating point value or missing.
 - Grouping variables: Any additional column may be chosen as for grouping the
   output by.
 
@@ -59,7 +59,7 @@ the following columns:
 The parsing function for the PuMaSNCADF is as follows:
 
 ```julia
-parse_ncadata(df; group=nothing, ii=nothing,
+read_nca(df; group=nothing, ii=nothing,
                   concu=true, timeu=true, amtu=true, verbose=true)
 ```
 
