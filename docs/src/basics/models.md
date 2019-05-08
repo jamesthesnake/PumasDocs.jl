@@ -134,6 +134,16 @@ a list of names, such as:
 @covariates wt sex height
 ```
 
+or
+
+```julia
+@covariates begin
+   wt
+   sex
+   height
+end
+```
+
 Covariates in the model match the structures they inherit from the data defined
 in the `Subject`.
 
