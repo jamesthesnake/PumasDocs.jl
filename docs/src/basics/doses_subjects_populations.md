@@ -122,7 +122,8 @@ The CSV has columns described as follows:
 - `addl`: the number of additional doses of the same time to give. Defaults to 0.
 - `rate`: the rate of administration. If `0`, then the dose is instantaneous.
   Otherwise the dose is administrated at a constant rate for a duration equal
-  to `amt/rate`. Defaults to `0`.
+  to `amt/rate`. A `rate=-2` allows the `rate` to be determined by a
+  [docing control parameter](). Defaults to `0`.
 - `ss`: an indicator for whether the dose is a steady state dose. A steady state
   dose is defined as the result of having applied the dose with the interval `ii`
   infinitely many successive times. `0` indicates that the dose is not a steady
