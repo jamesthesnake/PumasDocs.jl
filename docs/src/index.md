@@ -145,6 +145,16 @@ Pages = [
 ]
 ```
 
+### Bioequivalence
+
+This section of the documentation provides a how-to and technical details for performing bioequivalence analysis.
+
+```@Contents
+Pages = [
+    "bioequivalence/introduction.md"
+]
+```
+
 ## PuMaS Development Team
 
 The PuMaS team is supported by the

@@ -30,6 +30,9 @@ makedocs(
       "analysis/diagnostics.md",
       "analysis/sensitivity.md",
     ],
+    "Bioequivalence" => Any[
+      "bioequivalence/introduction.md"
+    ],
   ]
 )
 
