@@ -59,7 +59,7 @@ the following columns:
 The parsing function for the PuMaSNCADF is as follows:
 
 ```julia
-read_nca(df; group=nothing, ii=nothing,
+read_nca(df; group=nothing, ii=:ii, ss=:ss,
                   concu=true, timeu=true, amtu=true, verbose=true)
 ```
 
@@ -70,6 +70,7 @@ These arguments are:
 - `group`: the column to group the output by. Defaults to no grouping.
 - `ii`: the interdose interval. Used to specify the interval length for steady
   state dosing.
+- `ss`: the steady-state. Used to specify whether a dose is steady-state.
 - `concu`: the units for concentration. Defaults to no units.
 - `amtu`: the units for dosing amount. Defaults to no units.
 - `timeu`: the units for time. Defaults to no units.
