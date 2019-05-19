@@ -70,7 +70,9 @@ These arguments are:
 - `group`: the column to group the output by. Defaults to no grouping.
 - `ii`: the interdose interval. Used to specify the interval length for steady
   state dosing.
-- `ss`: the steady-state. Used to specify whether a dose is steady-state.
+- `ss`: the steady-state. Used to specify whether a dose is steady-state, a
+  steady-state dose takes the value 1 and 0 otherwise. Defaults to the `:ss`
+  column.
 - `concu`: the units for concentration. Defaults to no units.
 - `amtu`: the units for dosing amount. Defaults to no units.
 - `timeu`: the units for time. Defaults to no units.
