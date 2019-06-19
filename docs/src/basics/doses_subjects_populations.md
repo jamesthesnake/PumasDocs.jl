@@ -147,7 +147,7 @@ Special notes:
 ### PuMaSNDF Parsing
 
 ```julia
-process_nmtran(data,cvs=Symbol[],dvs=Symbol[:dv];
+read_pumas(data;vs=Symbol[],dvs=Symbol[:dv]
                         id=:id, time=:time, evid=:evid, amt=:amt, addl=:addl,
                         ii=:ii, cmt=:cmt, rate=:rate, ss=:ss)
 ```
