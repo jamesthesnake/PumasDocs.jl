@@ -1,14 +1,14 @@
 # Dosage Regimens, Subjects, and Populations
 
-The data is passed to a PuMaS model via the `Population` type. A `Population` is
+The data is passed to a Pumas model via the `Population` type. A `Population` is
 a collection of `Subject`s. In this section we will specify the methods used
 for defining `Subject`s and `Population`s. These types can either be defined
 programmatically using the `Subject` and `Population` constructors on Julia types
-or by using the PuMaS NLME Data format (named PuMaSNDF).
+or by using the Pumas NLME Data format (named PumasNDF).
 
 ## Dosage Regimen Terminology
 
-Both the `DosageRegimen` and the `PuMaSNDF` utilize the same terminology for
+Both the `DosageRegimen` and the `PumasNDF` utilize the same terminology for
 describing a dose. The definition of the values are as follows:
 
 - `amt`: the amount of the dose. This is the only required value.
@@ -99,9 +99,9 @@ The current `DosageRegimen` can be viewed in its tabular form using the
 The `Population` constructor is simply `Population(subjects)`, where
 `subjects` is a collection of `Subject`s.
 
-## PuMaSNDF
+## PumasNDF
 
-The PuMaSNDF is a specification for building a `Population` from
+The PumasNDF is a specification for building a `Population` from
 tabular data. Generally this tabular data is given by a database like a CSV.
 The CSV has columns described as follows:
 
@@ -144,10 +144,10 @@ Special notes:
 - If `rate` and `duration` exist, then it is enforced that `amt=rate*duration`
 - All values and header names are interpreted as lower case.
 
-### PuMaSNDF Parsing
+### PumasNDF Parsing
 
 ```julia
-read_pumas(data;vs=Symbol[],dvs=Symbol[:dv]
+read_Pumas(data;vs=Symbol[],dvs=Symbol[:dv]
                         id=:id, time=:time, evid=:evid, amt=:amt, addl=:addl,
                         ii=:ii, cmt=:cmt, rate=:rate, ss=:ss)
 ```

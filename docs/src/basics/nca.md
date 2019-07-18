@@ -1,6 +1,6 @@
 # Noncompartmental Analysis (NCA)
 
-NCA is performed in PuMaS by creating `NCASubject` and `NCAPopulation` types
+NCA is performed in Pumas by creating `NCASubject` and `NCAPopulation` types
 which then preprocess the data to allow for easy generation of all NCA values.
 These types come with plotting, `DataFrame`, and `report` overloads to ease the
 analysis process.
@@ -35,9 +35,9 @@ to use `auc` on `NCAPopulation`, one would use `NCA.auc(ncapop)`.
 
 ## Analysis Functionality (Plots, Reports, DataFrame)
 
-## PuMaSNCADF
+## PumasNCADF
 
-The PuMaSNCADF is a standardized format for tabular data for NCA. The format has
+The PumasNCADF is a standardized format for tabular data for NCA. The format has
 the following columns:
 
 - `id`: The string `id` of the subject.
@@ -54,9 +54,9 @@ the following columns:
 - Grouping variables: Any additional column may be chosen as for grouping the
   output by.
 
-### Parsing PuMaSNCADF
+### Parsing PumasNCADF
 
-The parsing function for the PuMaSNCADF is as follows:
+The parsing function for the PumasNCADF is as follows:
 
 ```julia
 read_nca(df; group=nothing, ii=:ii, ss=:ss,
@@ -77,4 +77,4 @@ These arguments are:
 - `amtu`: the units for dosing amount. Defaults to no units.
 - `timeu`: the units for time. Defaults to no units.
 - `verbose`: When true, warnings will be thrown when the output is does not
-  match PuMaSNCADF. Defaults to true.
+  match PumasNCADF. Defaults to true.

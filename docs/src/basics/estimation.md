@@ -1,12 +1,12 @@
-# Estimating Parameters of PuMaS Models
+# Estimating Parameters of Pumas Models
 
-PuMaS can use the observational data of a `Subject` or `Population` to estimate
+Pumas can use the observational data of a `Subject` or `Population` to estimate
 the parameters of an NLME model. This is done by two classes of methods.
 Maximum likelihood methods find the parameters such that the observational
 data has the highest probability of occurring according to the chosen error
 distributions. Bayesian methods find a posterior probability distribution for
 the parameters to describe the chance that a parameter has a given value given
-the data. The following section describes how to fit an NLME model in PuMaS
+the data. The following section describes how to fit an NLME model in Pumas
 via the two methods.
 
 ## Defining Data for Estimation
@@ -37,7 +37,7 @@ Maximum Likelihood Estimation (MLE) is performed using the `fit` function. This
 function's signature is:
 
 ```julia
-Distributions.fit(m::PuMaSModel,
+Distributions.fit(m::PumasModel,
                   data::Population,
                   param::NamedTuple,
                   approx::LikelihoodApproximation,
@@ -48,7 +48,7 @@ Distributions.fit(m::PuMaSModel,
 
 The arguments are:
 
-- `m`: a `PuMaSModel`, either defined by the `@model` DSL or the function-based
+- `m`: a `PumasModel`, either defined by the `@model` DSL or the function-based
   interface.
 - `data`: a `Population`.
 - `param`: a named tuple of parameters. Used as the initial condition for the
@@ -75,7 +75,7 @@ function DEFAULT_OPTIMIZE_FN(cost,p)
 end
 ```
 
-The return type of `fit` is a `FittedPuMaSModel`.
+The return type of `fit` is a `FittedPumasModel`.
 
 ### Marginal Likelihood Approximations
 
@@ -88,9 +88,9 @@ The following choices are available for the likelihood approximations:
 - `Laplace()`: second order Laplace approximation
 - `LaplaceI()`: second order Laplace approximation with interaction.
 
-### FittedPuMaSModel
+### FittedPumasModel
 
-The relevant fields of a `FittedPuMaSModel` are:
+The relevant fields of a `FittedPumasModel` are:
 
 - `model`: the `model` used in the estimation process.
 - `data`: the `Population` that was estimated.
@@ -100,18 +100,18 @@ The relevant fields of a `FittedPuMaSModel` are:
 Additionally, the following functions help interpret the fit:
 
 - `vcov(fpm)` returns the covariance matrix between the population parameters
-  for the `FittedPuMaSModel`
+  for the `FittedPumasModel`
 - `stderror(fpm)` returns the standard errors for the population parameters
-  for the `FittedPuMaSModel`
+  for the `FittedPumasModel`
 
 Additionally the function:
 
 ```julia
-predict(fpm::FittedPuMaSModel, approx=fpm.approx;
+predict(fpm::FittedPumasModel, approx=fpm.approx;
         nsim=nothing, timegrid=false, newdata=false, useEBEs=true)
 ```
 
-Returns a `FittedPuMaSPrediction` which contains the solution of all population
+Returns a `FittedPumasPrediction` which contains the solution of all population
 diagnostics in the field `population` and all individual diagnostics in the
 field `individual`. For more information on the diagnostics, please see the
 [Diagnostics page]()
@@ -121,13 +121,13 @@ field `individual`. For more information on the diagnostics, please see the
 Bayesian parameter estimation is performed by using the `fit` function as follows:
 
 ```julia
-fit(model::PuMaSModel, data::Population, ::BayesMCMC,
+fit(model::PumasModel, data::Population, ::BayesMCMC,
                        args...; nsamples=5000, kwargs...)
 ```
 
 The arguments are:
 
-- `m`: a `PuMaSModel`, either defined by the `@model` DSL or the function-based
+- `m`: a `PumasModel`, either defined by the `@model` DSL or the function-based
   interface.
 - `data`: a `Population`.
 - The `approx` must be `BayesMCMC()`.

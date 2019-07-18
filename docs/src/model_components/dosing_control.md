@@ -1,9 +1,9 @@
 # Dosing Control Parameters (DCP)
 
-The `pre` part of a `PuMaSModel` allows for specifying special preprocessed
+The `pre` part of a `PumasModel` allows for specifying special preprocessed
 parameters known as the Dosing Control Parameters (DCP). Unlike standard parameters
 which are for use in the proceeding blocks, the DCP are used to modify the
-internal event handling of the PuMaS. The DCP are defined as follows:
+internal event handling of the Pumas. The DCP are defined as follows:
 
 - `lags`: the lag of the dose. A dose with a lag will take place at time
   `t = dosetime + lag`. Default is zero.

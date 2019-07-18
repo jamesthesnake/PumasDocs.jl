@@ -1,12 +1,12 @@
 # Domains
 
-Domains are used to define the `param` portion of a `PuMaSModel`. This segment
+Domains are used to define the `param` portion of a `PumasModel`. This segment
 of the documentation describes the available `Domain` types that can be used
 within the `param` portions.
 
 ## Matching Parameter Types and Domains
 
-A `param` specification in a `PuMaSModel` directly defines the types which are
+A `param` specification in a `PumasModel` directly defines the types which are
 required to be given as the input to the model's API functions such as `simobs`
 and `fit`. For example, if the `param` specification is given as:
 
@@ -37,7 +37,7 @@ types.
 
 ## RealDomain and VectorDomain
 
-`RealDomain` and `VectorDomain` are the core domain types of PuMaS. A `RealDomain`
+`RealDomain` and `VectorDomain` are the core domain types of Pumas. A `RealDomain`
 defines a scalar value which exists in the real line, while a `VectorDomain`
 defines a real-valued vector which lives in a hypercube of $$\mathbb{R}^n$$.
 The length `n` of a `VectorDomain` is a required positional argument.
@@ -100,7 +100,7 @@ is a valid parameter specification.
 
 ## Distributional Domains
 
-Instead of using a `Domain` type from PuMaS, a `Distribution` can be used to
+Instead of using a `Domain` type from Pumas, a `Distribution` can be used to
 specify a domain. For example,
 
 ```julia

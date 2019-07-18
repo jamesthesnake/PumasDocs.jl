@@ -78,5 +78,5 @@ to be an `ODEProblem` defining an ODE. In the function-based interface, any
 - Mixed discrete and continuous equations (Hybrid Equations, Jump Diffusions)
 
 The problem type that is given can use sentinel values for the initial condition,
-timespan, and parameters which will be overridden by PuMaS during the simulation
+timespan, and parameters which will be overridden by Pumas during the simulation
 chain.

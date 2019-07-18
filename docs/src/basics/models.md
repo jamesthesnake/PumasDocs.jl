@@ -19,10 +19,10 @@ estimation tooling in the same manner.
 ### Quick Note on Probability Distributions
 
 Many of the NLME model definition portions require the specification of
-probability distributions. The distributions in PuMaS are defined by the
+probability distributions. The distributions in Pumas are defined by the
 [Distributions.jl](https://juliastats.github.io/Distributions.jl/stable/) library.
 All of the Distributions.jl `Distribution` types are able to be used throughout
-the PuMaS model definitions. Multivariate domains defines values which are
+the Pumas model definitions. Multivariate domains defines values which are
 vectors while univariate domains define values which are scalars. For the full
 documentation of the `Distribution` types, please see
 [the Distributions.jl documentation](https://juliastats.github.io/Distributions.jl/stable/)
@@ -403,19 +403,19 @@ end
 If no `@observed` block is specified, then the results of a simulation will
 simply be the derived values and the samples from the error models.
 
-## The PuMaSModel Function-Based Interface
+## The PumasModel Function-Based Interface
 
-The `PuMaSModel` function-based interface for defining an NLME model is the most
-expressive mechanism for using PuMaS and directly utilizes Julia types and
+The `PumasModel` function-based interface for defining an NLME model is the most
+expressive mechanism for using Pumas and directly utilizes Julia types and
 functions. In fact, under the hood the `@model` DSL works by building an
-expression for the `PuMaSModel` interface! A `PuMaSModel` has the constructor:
+expression for the `PumasModel` interface! A `PumasModel` has the constructor:
 
 ```julia
-PuMaSModel(paramset,random,pre,init,prob,derived,observed=(col,sol,obstimes,samples,subject)->samples)
+PumasModel(paramset,random,pre,init,prob,derived,observed=(col,sol,obstimes,samples,subject)->samples)
 ```
 
 Notice that the `observed` function is optional. This section describes the API
-of the functions which make up the `PuMaSModel` type. The structure closely
+of the functions which make up the `PumasModel` type. The structure closely
 follows that of the `@model` macro but is more directly Julia syntax.
 
 ### The `paramset` ParamSet
@@ -550,6 +550,6 @@ function observed(col,sol,obstimes,samples,subject)
 end
 ```
 
-Note that if the `observed` function is not given to the `PuMaSModel` constructor,
+Note that if the `observed` function is not given to the `PumasModel` constructor,
 the default function `(col,sol,obstimes,samples,subject)->samples` which passes
 through the sampled derived values is used.

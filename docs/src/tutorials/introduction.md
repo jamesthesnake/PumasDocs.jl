@@ -1,9 +1,9 @@
-# Introduction to PuMaS
+# Introduction to Pumas
 
-This is an introduction to PuMaS, a software for pharmaceutical modeling and
+This is an introduction to Pumas, a software for pharmaceutical modeling and
 simulation.
 
-The basic workflow of PuMaS is:
+The basic workflow of Pumas is:
 
 1. Build a model.
 2. Define subjects or populations to simulate or estimate.
@@ -21,7 +21,7 @@ Let's start by showing a complete simulation code, and then break down how it
 works.
 
 ```julia
-using PuMaS, LinearAlgebra
+using Pumas, LinearAlgebra
 
 model = @model begin
 

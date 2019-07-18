@@ -1,8 +1,8 @@
-# Simulation of PuMaS Models
+# Simulation of Pumas Models
 
 ## The `simobs` Function
 
-Simulation of a `PuMaSModel` are performed via the `simobs` function. The function
+Simulation of a `PumasModel` are performed via the `simobs` function. The function
 is given by the values:
 
 ```julia
@@ -11,7 +11,7 @@ simobs(m,data,param,[randeffs];kwargs...)
 
 The terms in the function call are:
 
-- `m`: the `PuMaSModel`, either defined via the `@model` DSL or the function-based
+- `m`: the `PumasModel`, either defined via the `@model` DSL or the function-based
   interface.
 - `data`: either a `Subject` or a `Population`.
 - `param`: a `NamedTuple` of parameters which conform to the `ParamSet` of the
@@ -30,10 +30,10 @@ Additionally, the following keyword arguments can be used:
   detection algorithm for ODEs.
 - `parallel_type`: the type of parallelism to use internally for simulating
   a `Population`. The options are:
-  - `PuMaS.Serial`: No parallelism.
-  - `PuMaS.Threads`: Shared memory multithreading.
-  - `PuMaS.Distributed`: Distributed (multinode, multi-computer) parallelism.
-  The default is `PuMaS.Threads`.
+  - `Pumas.Serial`: No parallelism.
+  - `Pumas.Threads`: Shared memory multithreading.
+  - `Pumas.Distributed`: Distributed (multinode, multi-computer) parallelism.
+  The default is `Pumas.Threads`.
 - Any keyword argument in the DifferentialEquations.jl common solver arguments.
   These are documented on the [DifferentialEquations.jl common solver options page](http://docs.juliadiffeq.org/latest/basics/common_solver_opts.html).
 
