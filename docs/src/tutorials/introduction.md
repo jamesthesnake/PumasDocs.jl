@@ -70,22 +70,24 @@ end
 regimen = DosageRegimen([15,15,15,15], time=[0,4,8,12])
 subject = Subject(id=1,evs=regimen)
 
-p = (θ = [
-          1, # Ka  Absorption rate constant 1 (1/time)
-          1, # CL   Clearance (volume/time)
-          20, # Vc   Central volume (volume)
-          2, # Q    Inter-compartmental clearance (volume/time)
-          10, # Vp   Peripheral volume of distribution (volume)
-          10, # Kin  Response in rate constant (1/time)
-          2, # Kout Response out rate constant (1/time)
-          2, # IC50 Concentration for 50% of max inhibition (mass/volume)
-          1, # IMAX Maximum inhibition
-          1, # γ    Emax model sigmoidicity
-          0, # Vmax Maximum reaction velocity (mass/time)
-          2  # Km   Michaelis constant (mass/volume)
-          ],) # single element `NamedTuple`s end with a comma
+param = (θ = [
+              1, # Ka  Absorption rate constant 1 (1/time)
+              1, # CL   Clearance (volume/time)
+              20, # Vc   Central volume (volume)
+              2, # Q    Inter-compartmental clearance (volume/time)
+              10, # Vp   Peripheral volume of distribution (volume)
+              10, # Kin  Response in rate constant (1/time)
+              2, # Kout Response out rate constant (1/time)
+              2, # IC50 Concentration for 50% of max inhibition (mass/volume)
+              1, # IMAX Maximum inhibition
+              1, # γ    Emax model sigmoidicity
+              0, # Vmax Maximum reaction velocity (mass/time)
+              2  # Km   Michaelis constant (mass/volume)
+              ],) # single element `NamedTuple`s end with a comma
 
-sim = simobs(model, subject, p)
+sim = simobs(model, subject, param)
+
+using Plots
 plot(sim)
 ```
 
@@ -104,7 +106,7 @@ this block we have a few subsections. The first of which is `@param`. In here
 we define what kind of parameters we have. For this model we will define a
 vector parameter `θ` of size 12:
 
-```{julia;eval=false}
+```julia
 @param begin
   θ ∈ VectorDomain(12)
 end
@@ -115,7 +117,7 @@ from Distributions.jl. For more information on defining distributions, please
 see the Distributions.jl documentation. For this tutorial, we wish to have a
 multivariate normal of 11 uncorrelated random effects, so we utilize the syntax:
 
-```{julia;eval=false}
+```julia
 using LinearAlgebra
 @random begin
   η ~ MvNormal(Matrix{Float64}(I, 11, 11))
@@ -129,7 +131,7 @@ Now we define our pre-processing step in `@pre`. This is where we choose how the
 parameters, random effects, and the covariates collate. We define the values and
 give them a name as follows:
 
-```{julia;eval=false}
+```julia
 @pre begin
     Ka1     = θ[1]
     CL      = θ[2]*exp(η[1])
@@ -151,7 +153,7 @@ differential equations. Any variable not mentioned in this block is assumed to
 have a zero for its starting value. We wish to only set the starting value for
 `Resp`, and thus we use:
 
-```{julia;eval=false}
+```julia
 @init begin
     Resp = Kin/Kout
 end
@@ -161,10 +163,10 @@ Now we define our dynamics. We do this via the `@dynamics` block. Differential
 variables are declared by having a line defining their derivative. For our model,
 we use:
 
-```{julia;eval=false}
+```julia
 @dynamics begin
-    Depot'    = -Ka1*Depot
-    Cent'   =  Ka1*Depot - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
+    Depot'  = -Ka*Depot
+    Cent'   =  Ka*Depot - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
     Periph' =  Q*(Cent/Vc)  - Q*(Periph/Vp)
     Resp'   =  Kin*(1-(IMAX*(Cent/Vc)^γ/(IC50^γ+(Cent/Vc)^γ)))  - Kout*Resp
 end
@@ -173,9 +175,9 @@ end
 Lastly we utilize the `@derived` macro to define our post-processing. We can
 output values using the following:
 
-```{julia;eval=false}
+```julia
 @derived begin
-    depot    = Depot
+    depot  = Depot
     cp     = Cent / θ[3]
     periph = Periph
     resp   = Resp
@@ -200,7 +202,7 @@ NMTRAN format to specify its dose schedule. The first value is always the
 dosing amount. Then there are optional arguments, the most important of which
 is `time` which specifies the time that the dosing occurs. For example,
 
-```julia{line_width=90}
+```julia
 DosageRegimen(15, time=0)
 ```
 
@@ -252,7 +254,7 @@ using Plots
 plot(sim)
 ```
 
-![show plot]()
+![show plot](https://user-images.githubusercontent.com/1814174/61486825-5d686780-a972-11e9-958e-dbb95e410267.png)
 
 Note that we can use the [attributes from `Plots.jl`](http://docs.juliaplots.org/latest/attributes/)
 to further modify the plot. For example,
@@ -263,7 +265,7 @@ plot(sim,
      legend=false, lw=2)
 ```
 
-![show plot]()
+![show plot](https://user-images.githubusercontent.com/1814174/61486892-90126000-a972-11e9-96ef-e898dc2a9dc7.png)
 
 Notice that in our model we said that there was a single parameter `θ` so our
 input parameter is a named tuple with just the name `θ`. When we only give
@@ -277,16 +279,18 @@ sim = simobs(model, subject, param, randeffs)
 plot(sim)
 ```
 
-![show plot]()
+![show plot](https://user-images.githubusercontent.com/1814174/61487094-031bd680-a973-11e9-9835-4ad1c52a87ba.png)
 
 If a population simulation is required with no random effects, then the values of
 the η's can be set to zero that will result in a simulation only at the mean level:
 
-```julia(eval=false)
+```julia
 randeffs = (η = zeros(11),)
-sim = simobs(model, subject, fixeffs, randeffs)
+sim = simobs(model, subject, param, randeffs)
 plot(sim)
 ```
+
+![show plot](https://user-images.githubusercontent.com/1814174/61487172-30688480-a973-11e9-8292-a3a7764986bc.png)
 
 The points which are saved are by default at once every hour until one day after
 the last event. If you wish to change the saving time points, pass the keyword
@@ -295,10 +299,7 @@ simulation for 19 hours:
 
 ```julia
 sim = simobs(model, subject, param, randeffs, obstimes = 0:0.1:19)
-plot(sim)
 ```
-
-![show plot]()
 
 ## Handling the SimulatedObservations
 

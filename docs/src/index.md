@@ -4,7 +4,7 @@ Pumas (PharmaceUtical  Modeling And Simulation) is a suite of tools for
 developing, simulating, fitting, and analyzing pharmaceutical models. The
 purpose of this framework is to bring efficient implementations of all aspects
 of pharmaceutical modeling under one cohesive package. **While Pumas is still
-in beta**, the package currently includes:
+in alpha**, the package currently includes:
 
 - Specification of Nonlinear Mixed Effects (NLME) Models
 - Automatic parallelization of NLME simulations
