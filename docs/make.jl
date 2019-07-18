@@ -28,7 +28,6 @@ makedocs(
     ],
     "Diagnostics" => Any[
       "analysis/diagnostics.md",
-      "analysis/sensitivity.md",
     ],
   ]
 )
