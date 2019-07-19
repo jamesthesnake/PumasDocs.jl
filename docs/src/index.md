@@ -32,8 +32,10 @@ we would be grateful if you could cite our work. Our suggested citation is:
 
 ## Getting Started: Installation and First Steps
 
-Pumas is distributed via JuliaPro from Julia Computing Inc. To install the package,
-use the following commands inside the JuliaPro REPL:
+Pumas is distributed via JuliaPro from Julia Computing Inc. Please
+[install the current stable release of JuliaPro](https://juliacomputing.com/products/juliapro.html).
+
+To add the `Pumas` package, use the following commands inside the JuliaPro REPL:
 
 ```julia
 using Pkg
