@@ -33,5 +33,5 @@ makedocs(
   )
 
 deploydocs(
-   repo = "github.com/UMCTM/PuMaSDocs.jl.git",
+   repo = "github.com/PumasAI/PumasDocs.jl.git",
 )
