@@ -53,7 +53,7 @@ vpc_nonstrat = vpc(m, data, param, 200)
 plot(vpc_nonstrat)
 ```
 The `VPC` object stores the quantiles and the simulations which 
-can be used for recalculating the VPC quantiles witha different combination of arguments.
+can be used for recalculating the VPC quantiles with a different combination of arguments.
 
 ```julia
 vpc_stratwt = vpc(vpc_nonstrat.Simulations, data; stratify_on = [:wt])
