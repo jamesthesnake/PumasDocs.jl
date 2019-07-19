@@ -87,6 +87,46 @@ arguments are as follows:
   (C_{maxss}-C_{minss})/C_{minss}`` (usetau=false) or ``swing =
   (C_{maxss}-C_{tau})/C_{tau}`` (usetau=true).
 
+For urine analysis the functions are:
+
+- `n_samples(subj)`: the number of measurements that is above the lower limit of
+  quantification.
+- `dosetype(subj)`: route.
+- `doseamt(subj)`: dosage amount.
+- `urine_volume(subj)`: urine volume.
+- `lambdaz(subj)`: terminal elimination rate constant (``λz``).
+- `lambdazr2(subj)`: coefficient of determination (``r²``) when calculating
+  ``λz``. Note that is quantity must be computed after calculating ``λz``.
+- `lambdazadjr2(subj)`: adjusted coefficient of determination (``adjr²``) when
+  calculating ``λz``. Note that is quantity must be computed after calculating
+  ``λz``.
+- `lambdazr(subj)`: correlation coefficient (``r``) when calculating ``λz``.
+  Note that is quantity must be computed after calculating ``λz``.
+- `lambdaznpoints(subj)`: number of points that is used in the ``λz``
+  calculation. Note that is quantity must be computed after calculating ``λz``.
+- `lambdazintercept(subj)`: `y`-intercept in the log-linear scale when
+  calculating ``λz``. Note that is quantity must be computed after calculating
+  ``λz``.
+- `lambdaztimefirst(subj)`: the first time point that is used in the ``λz``
+  calculation. Note that is quantity must be computed after calculating ``λz``.
+- `lambdaztimelast(subj)`: the last time point that is used in the ``λz``
+  calculation. Note that is quantity must be computed after calculating ``λz``.
+- `thalf(subj)`: half life.
+- `span(subj)`: `(lambdaztimelast(subj; kwargs...) - lambdaztimefirst(subj) /
+  thalf(subj)`. Note that is quantity must be computed after calculating ``λz``.
+- `tlag(subj)`: time prior to the first increase in concentration.
+- `tmax_rate(subj)`: midpoint of collection interval associated with the maximum
+  observed excretion rate.
+- `max_rate(subj)`: maximum observed excretion rate.
+- `rate_last(subj; pred=false)`: last measurable rate.
+- `mid_time_last(subj)`: midpoint of collection interval associated with `rate_last`.
+- `amount_recovered(subj)`: cumulative amount eliminated.
+- `percent_recovered(subj)`: `100*amount_recovered/doseamt`.
+- `aurc(subj; auctype=:inf, method=:linear, interval=nothing, normalize=false,
+  pred=false)`: the area under the urinary excretion rate curve (AURC).
+- `aurc_extrap_percent(subj; pred=false)`: the percentage of AURC infinity due
+  to extrapolation from `tlast`.
+
 These functions are all accessed from within the NCA submodule. For example,
 to use `auc` on `NCAPopulation`, one would use `NCA.auc(pop)`.
 
@@ -116,7 +156,7 @@ passed all NCA functions.
 The PumasNCADF is a standardized format for tabular data for NCA. The format has
 the following columns:
 
-- `id`: The string `id` of the subject.
+- `id`: the string `id` of the subject.
 - `conc`: the concentration time series measurements. Values must be floating
   point numbers or missing.
 - `time`: the time at which the concentration was measured.
@@ -130,13 +170,28 @@ the following columns:
 - Grouping variables: Any additional column may be chosen as for grouping the
   output by.
 
+For urine analysis, the format has the follows columns:
+
+- `id`: the string `id` of the subject.
+- `conc`: the concentration time series measurements.
+- `voumne`: urine volume.
+- `start_time`: the beginning of the collection time.
+- `end_time`: the end of the collection time.
+- `amt`: the amount of a dose. Must be a floating point value at each dosing
+  time, and otherwise missing.
+- `route`: the route of administration. Possible choices are `iv` for intravenous,
+  `ev` for extravascular, and `inf` for infusion.
+- `duration`: the infusion duration. Should be a floating point value or missing.
+- Grouping variables: Any additional column may be chosen as for grouping the
+  output by.
+
 ### Parsing PumasNCADF
 
 The parsing function for the PumasNCADF is as follows:
 
 ```julia
-read_nca(df; group=nothing, ii=:ii, ss=:ss,
-                  concu=true, timeu=true, amtu=true, verbose=true)
+read_nca(df; group=nothing, ii=:ii, ss=:ss, blq=:blq
+                  concu=true, timeu=true, amtu=true, volumeu=true, verbose=true)
 ```
 
 These arguments are:
@@ -149,8 +204,12 @@ These arguments are:
 - `ss`: the steady-state. Used to specify whether a dose is steady-state, a
   steady-state dose takes the value 1 and 0 otherwise. Defaults to the `:ss`
   column.
+- `blq`: below the lower limit of quantification (BLQ). Used to specify the
+  concentration that is BLQ, BLQ column takes the value 1 and 0 otherwise.
+  Defaults to the `:blq` column.
 - `concu`: the units for concentration. Defaults to no units.
 - `amtu`: the units for dosing amount. Defaults to no units.
 - `timeu`: the units for time. Defaults to no units.
+- `volumeu`: the units for volume. Defaults to no units.
 - `verbose`: When true, warnings will be thrown when the output is does not
   match PumasNCADF. Defaults to true.
