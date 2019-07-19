@@ -24,14 +24,14 @@ user experience.
 
 ## License
 
-Pumas is covered by the [Julia Computing EULA](). There are four available
-licenses:
+Pumas is covered by the [Julia Computing EULA](). Among other things, by using
+Pumas you are agreeing to one of the four available licenses:
 
 (a) FREE LICENSE: If you obtained the Software pursuant to a free download or
     are using the Software pursuant to free online usage, you may use the
     Software as per terms and conditions specified in clause 1. above; provided,
-    however, that in all events, Pumas.jl, Miletus.jl, JuliaInXL.jl and
-    Bplapi.jl, may be used only for Non-Commercial Purposes (as defined below).
+    however, that in all events, Pumas.jl may be used only for Non-Commercial
+    Purposes (as defined below).
     "Non-Commercial Purposes" means the use of the Software for non-commercial
     academic teaching and research purposes or other non-commercial not-for
     profit scholarly purposes, where " non-commercial" means not involving the
