@@ -22,13 +22,49 @@ All of this takes place in the high level interactive Julia programming language
 and integrates with the other packages in the Julia ecosystem for a robust
 user experience.
 
-### Supporting and Citing
+## License
 
-The software in this ecosystem was developed as part of academic research.
-If you use Pumas software as part of your research, teaching, or other activities,
-we would be grateful if you could cite our work. Our suggested citation is:
+Pumas is covered by the [Julia Computing EULA](). There are four available
+licenses:
 
-**TBD**
+(a) FREE LICENSE: If you obtained the Software pursuant to a free download or
+    are using the Software pursuant to free online usage, you may use the
+    Software as per terms and conditions specified in clause 1. above; provided,
+    however, that in all events, Pumas.jl, Miletus.jl, JuliaInXL.jl and
+    Bplapi.jl, may be used only for Non-Commercial Purposes (as defined below).
+    "Non-Commercial Purposes" means the use of the Software for non-commercial
+    academic teaching and research purposes or other non-commercial not-for
+    profit scholarly purposes, where " non-commercial" means not involving the
+    use of the Software to perform services for a fee or for the production or
+    manufacture of software programs for sale or distribution to third parties.
+(b) EVALUATION LICENSE: If You obtained the Software pursuant to an evaluation
+    license, you may use the Software only for internal evaluation purposes and
+    only for the term of the evaluation period, as specified on Julia Computing
+    download website or in the documentation related to the distribution.
+    NOTWITHSTANDING ANYTHING TO THE CONTRARY ELSEWHERE IN THIS AGREEMENT, YOU
+    MAY USE THE SOFTWARE ONLY FOR EVALUATION PURPOSES AND ONLY FOR THE TERM OF
+    THE EVALUATION, YOU MAY NOT DISTRIBUTE ANY PORTION OF THE SOFTWARE, AND THE
+    APPLICATION AND/OR PRODUCT DEVELOPED BY YOU MAY ONLY BE USED FOR EVALUATION
+    PURPOSES AND ONLY FOR THE TERM OF THE EVALUATION. You may install copies of
+    the Software on a reasonable number of computers to conduct your evaluation
+    provided that you are the only individual using the Software and only one
+    copy of the Software is in use at any one time.
+(c) EDU LICENSE. If You obtained the Software pursuant to an EDU license, you
+    may use the Software only for educational and teaching purposes, as
+    specified on Julia Computing download website or in the documentation
+    related to the distribution. NOTWITHSTANDING ANYTHING TO THE CONTRARY
+    ELSEWHERE IN THIS AGREEMENT, YOU MAY USE THE SOFTWARE ONLY FOR EDUCATIONAL
+    PURPOSES, YOU MAY NOT DISTRIBUTE ANY PORTION OF THE SOFTWARE, AND THE
+    APPLICATION AND/OR PRODUCT DEVELOPED BY YOU MAY ONLY BE USED FOR EDUCATIONAL
+    PURPOSES.
+(d) COMMERCIAL LICENSE WITH SUPPORT: If you obtained the Software pursuant to a
+    separate Julia Computing License Agreement that includes a commercial
+    license and support services, you may use the Software as per terms and
+    conditions specified in the applicable Julia Computing License Agreement
+    and if no terms are specified in the Julia Computing License Agreement,
+    then subject to the terms of Section 6(a) above. Any support services shall
+    be provided as set forth herein and pursuant to the terms of the Julia
+    Computing License Agreement.
 
 ## Getting Started: Installation and First Steps
 
