@@ -46,8 +46,21 @@ Computes the quantiles for VPC. The default quantiles are the 5th, 50th and 95th
 Takes in a `PumasModel`, `Population`, parameters, and an integer number of
 repetitions.
 
-Note that instead of the model, simulations from a previous vpc run (obtained
-from VPC.Simulations) or a FittedPumasModel can be used.
+The `vpc` function returns a `VPC` object which can then be used for plotting. 
+
+```julia
+vpc_nonstrat = vpc(m, data, param, 200)
+plot(vpc_nonstrat)
+```
+The `VPC` object stores the quantiles and the simulations which 
+can be used for recalculating the VPC quantiles witha different combination of arguments.
+
+```julia
+vpc_stratwt = vpc(vpc_nonstrat.Simulations, data; stratify_on = [:wt])
+plot(vpc_stratwt)
+```
+
+Note that instead of the model a FittedPumasModel can be also be used.
 
 Keyword arguments:
 
