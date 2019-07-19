@@ -5,7 +5,7 @@ makedocs(
   doctest=false,
   clean=true,
   format =Documenter.HTML(),
-  sitename="PuMaS",
+  sitename="Pumas",
   authors="Chris Rackauckas, Yingbo Ma, Joga Gobburu, Vijay Ivaturi",
   pages = Any[
     "Home" => "index.md",
