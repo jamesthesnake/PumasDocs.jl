@@ -74,7 +74,7 @@ Many of these domains allow specifying bounds, for example, we can specify
 θ ∈ RealDomain(lower=0.0, upper=1.0)
 ```
 
-For the full specifications of the domain types, please the [the Domains page]().
+For the full specifications of the domain types, please the [Domains](@ref) page.
 Additionally, parameters can be defined via a probability distributions, in
 which case the values are defined via `~`. For example, we can say that θ
 comes from a standard normal distribution via:
@@ -164,7 +164,7 @@ Julia functions can be used in this block, and the resulting variables can
 be any Julia type. One consequence of allowing these values to be any Julia
 type is that the pre-processed variables can be Julia functions. For example,
 we can define `Ka` as a time-dependent function by using Julia's
-[anonymous function syntax]():
+[anonymous function syntax](https://docs.julialang.org/en/v1/manual/functions/index.html#man-anonymous-functions-1):
 
 ```julia
 Ka = t -> t*θ[1]
@@ -184,7 +184,7 @@ end
 
 Special parameters, such as `lag`, are used to control the internal event
 handling (dosing) system. For more information on these parameters, see the
-[Dosing Control Parameters]() page.
+[Dosing Control Parameters (DCP)](@ref) page.
 
 ### `@vars`: Variable Aliases
 
@@ -266,7 +266,7 @@ ordinary differential equation (ODE) (for more types of differential equations,
 please see the function-based interface).
 
 The analytical solutions are defined in the
-[dynamical types]() page and can be invoked via the name. For example,
+[Dynamical Problem Types](@ref) page and can be invoked via the name. For example,
 
 ```julia
 @dynamics OneCompartmentModel
@@ -316,7 +316,7 @@ conc = @. Central / V
 ```
 
 defines an array `conc` to be output from the model. Notice that we used Julia's
-[broadcast syntax]() (`@.`) for specifying that every value of Central is to be divided
+[broadcast syntax](https://docs.julialang.org/en/v1/manual/arrays/index.html#Broadcasting-1) (`@.`) for specifying that every value of Central is to be divided
 by `V`. Note that any standard Julia syntax (and externally defined functions)
 are allowed in this block.
 
@@ -359,7 +359,8 @@ end
 ```
 
 to build an `NCASubject` using the time series given by the derived or dynamical
-variable `conc`. Once defined, the [functionality of the NCA module]() can be
+variable `conc`. Once defined, the functionality of the
+[Noncompartmental Analysis (NCA)](@ref) can be
 used to define derived variables via NCA diagnostics, for example:
 
 ```julia
@@ -421,7 +422,7 @@ follows that of the `@model` macro but is more directly Julia syntax.
 ### The `paramset` ParamSet
 
 The value `paramset` is a `ParamSet` object which takes in a named tuple of `Domain`
-types. These `Domain` types are defined [on the Domains page](). For example,
+types. These `Domain` types are defined on the [Domains](@ref) page. For example,
 the following is a value `ParamSet` construction:
 
 ```julia
@@ -469,7 +470,7 @@ specified via the `subject.covariates` field.
 
 Special parameters in the return of the `pre` function, such as `lag`, are
 used to control the internal event handling (dosing) system. For more
-information on these parameters, see the [Dosing Control Parameters]() page.
+information on these parameters, see the [Dosing Control Parameters (DCP)](@ref) page.
 
 ### The `init` Function
 

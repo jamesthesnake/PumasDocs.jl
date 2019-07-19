@@ -30,7 +30,7 @@ makedocs(
       "analysis/diagnostics.md",
     ],
   ]
-)
+  )
 
 deploydocs(
    repo = "github.com/UMCTM/PuMaSDocs.jl.git",

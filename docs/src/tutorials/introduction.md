@@ -53,8 +53,8 @@ model = @model begin
     end
 
     @dynamics begin
-        Depot'    = -Ka1*Depot
-        Cent'   =  Ka1*Depot - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
+        Depot'  = -Ka*Depot
+        Cent'   =  Ka*Depot - (CL+Vmax/(Km+(Cent/Vc))+Q)*(Cent/Vc)  + Q*(Periph/Vp)
         Periph' =  Q*(Cent/Vc)  - Q*(Periph/Vp)
         Resp'   =  Kin*(1-(IMAX*(Cent/Vc)^γ/(IC50^γ+(Cent/Vc)^γ)))  - Kout*Resp
     end
@@ -91,7 +91,7 @@ using Plots
 plot(sim)
 ```
 
-![Plot sim]()
+![Plot sim](https://user-images.githubusercontent.com/1814174/61486825-5d686780-a972-11e9-958e-dbb95e410267.png)
 
 In this code, we defined a nonlinear mixed effects model by describing the
 parameters, the random effects, the dynamical model, and the derived

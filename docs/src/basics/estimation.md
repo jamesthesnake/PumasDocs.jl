@@ -114,7 +114,7 @@ predict(fpm::FittedPumasModel, approx=fpm.approx;
 Returns a `FittedPumasPrediction` which contains the solution of all population
 diagnostics in the field `population` and all individual diagnostics in the
 field `individual`. For more information on the diagnostics, please see the
-[Diagnostics page]()
+[Simulation and Estimation Diagnostics](@ref)
 
 ## Bayesian Estimation
 
