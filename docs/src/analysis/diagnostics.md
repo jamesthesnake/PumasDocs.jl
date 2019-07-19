@@ -16,7 +16,7 @@ a `FittedPumasModelInference` object used for inference based on the fitted mode
 
 ## Model Diagnostic Functions
 
-Model diagnostics are used to check if the model fits the data well. A numberof residual diagnostics are available as well as shrinkage estimators.
+Model diagnostics are used to check if the model fits the data well. A number of residual diagnostics are available as well as shrinkage estimators.
 
 ### Population Residuals
 
