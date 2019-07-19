@@ -11,12 +11,9 @@ in alpha**, the package currently includes:
 - Deep control over the differential equation solvers for high efficiency
 - Estimation of NLME parameters via Maximum Likelihood and Bayesian methods
 - Integrated Noncompartmental Analysis (NCA)
-- Symbolic tooling for automatic calculation of system Jacobians
 - Interfacing with global optimizers for more accurate parameter estimates
 - Simulation and estimation diagnostics
-- Global and local sensitivity analysis (Morris, Sobol, etc.)
-- Fisher Information Matrix (FIM) calculations for Optimal Design
-- Bioequivalence analysis and IVIVC
+- Bioequivalence analysis
 
 Additional features are under development, with the central goal being a
 complete clinical trial simulation engine which combines efficiency with a
