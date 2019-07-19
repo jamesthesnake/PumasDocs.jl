@@ -33,7 +33,8 @@ must be given values in the `pre` block.
 The `ImmediateAbsorptionModel` corresponds to the ODE:
 
 ```math
-Central' &= -(CL/V)*Central
+\begin{align}
+Central' &= -(CL/V)*Central\\
 \end{align}
 ```
 
@@ -43,7 +44,7 @@ The `OneCompartmentModel` corresponds to the ODE:
 
 ```math
 \begin{align}
-Depot'   &= -Ka*Depot
+Depot'   &= -Ka*Depot\\
 Central' &=  Ka*Depot - (CL/V)*Central
 \end{align}
 ```
@@ -54,8 +55,8 @@ The `OneCompartmentParallelModel` corresponds to the ODE:
 
 ```math
 \begin{align}
-Depot1'   &= -Ka1*Depot1
-Depot2'   &= -Ka2*Depot2
+Depot1'   &= -Ka1*Depot1\\
+Depot2'   &= -Ka2*Depot2\\
 Central'  &=  Ka1*Depot1 + Ka2*Depot2 - (CL/V)*Central
 \end{align}
 ```
