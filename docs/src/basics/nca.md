@@ -7,17 +7,24 @@ analysis process.
 
 ## The NCA Functions
 
-NCA functions can perform calculations on both `NCAPopulation` and `NCASubject`.
-When the input is a `NCAPopulation`, then the output is a `DataFrame`, and when
-the input is a `NCASubject`, the output is a number. The keyword argument
-`interval` takes a tuple of two numbers like `(1., 10.)` which will compute the
-quantity in the time interval, or `nothing` which will compute the quantity in
-the entire time span. The keyword argument `normalize` (normalize with respect
-to dosage) takes `true` or `false`. The keyword argument `auctype` (types of
-AUC) takes `:inf` or `:last`. The keyword argument `method` takes `:linear`,
-`:linuplogdown`, or `:linlog`. The keyword arguments `pred` (predicted) takes
-`true` or `false`. A description of the NCA output functions with the default
-arguments are as follows:
+The NCA functions can perform calculations on both `NCAPopulation` and
+`NCASubject`. When the input is a `NCAPopulation`, then the output is a
+`DataFrame`, and when the input is a `NCASubject`, the output is a number.
+
+### Keyword Arguments
+
+The following keyword arguments apply to all NCA functions:
+
+- `interval` takes a tuple of two numbers like `(1., 10.)` which will compute the
+  quantity in the time interval, or `nothing` which will compute the quantity in
+  the entire time span. Default is `nothing`
+- `normalize` (normalize with respect to dosage) takes `true` or `false`. Default
+  is `false`.
+- `auctype` (types of AUC) takes `:inf` or `:last`. Default is `:inf`.
+- `method` takes `:linear`, `:linuplogdown`, or `:linlog`. Default is `:linear`
+- `pred` (predicted) takes `true` or `false`. Default is `false`.
+
+### NCA Function List
 
 - `n_samples(subj)`: the number of measurements that is above the lower limit of
   quantification.
