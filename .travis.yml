@@ -5,6 +5,7 @@ jobs:
     - stage: "Documentation"
       julia: 1.1
       os: linux
+      email: false
       script:
         - julia --color=yes --project=docs/ -e 'using Pkg; Pkg.instantiate()'
         - julia --color=yes --project=docs/ docs/make.jl
