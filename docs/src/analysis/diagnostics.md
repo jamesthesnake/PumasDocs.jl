@@ -118,7 +118,7 @@ As between the FO estimation method and FOCE estimation method, residuals can be
 ICWRES_i=R_i^{-1/2}(y_i-f_i(\theta,\eta_i^* =\hat{\eta}_i^*,Z_i,t_i))
 ```
 
-where ``R_i`` is the residual variance for subject ``i``, see \eqref{eq:res_var}. Note that the residual variance of ICWRES are evaluated at ``\eta_i^*=0``
+where ``R_i`` is the residual variance for subject ``i``. Note that the residual variance of ICWRES are evaluated at ``\eta_i^*=0``
 
 - `icwresi(model, subject, param[, rfx])` : Individual Conditional Weighted Residuals with Interaction
 
@@ -128,7 +128,7 @@ The ICWRESI is very similar to the ICWRES, except that the residual variance is 
 ICWRESI_i=R_i^{-1/2}(y_i-f_i(\theta,\eta_i^* =\hat{\eta}_i^*,Z_i,t_i))
 ```
 
-where ``R_i`` is the residual variance for subject ``i``, see \eqref{eq:res_var}. Note that the residual variance of ICWRESI are evaluated at ``\eta_i^* =\hat{\eta}_i^*``
+where ``R_i`` is the residual variance for subject ``i``. Note that the residual variance of ICWRESI are evaluated at ``\eta_i^* =\hat{\eta}_i^*``
 
 - `eiwres(model, subject, param[, rfx], simulations_count)` : Expected Simulation based Individual Weighted Residuals
 
